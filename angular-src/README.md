@@ -1,5 +1,11 @@
 # AngularSrc
 
+This project is a simple mobile application which calculates the price breakdown (per person) for a hotel purchase, airbnb rental, or any other multi-way rental purchase.
+
+The user simply has to enter the total price of the rental property (hotel, airbnb, etc), and the number of days spent by each person staying at the property (e.g. Allen is staying 2 nights, Bob is staying 4 nights).
+
+The calculator will provide a simple result for each person in your party. 
+
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
 
 ## Development server
