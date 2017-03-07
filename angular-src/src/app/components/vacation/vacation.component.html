@@ -1,0 +1,82 @@
+<form [formGroup]="vacationForm" (ngSubmit)="onSubmit()" novalidate>
+  <div style="margin-bottom: 1em">
+    <button type="submit"
+            [disabled]="vacationForm.pristine" class="btn btn-success">Submit</button> &nbsp;
+    <button type="reset" (click)="revert()"
+            [disabled]="vacationForm.pristine" class="btn btn-danger">Revert</button>
+  </div>
+  <!-- Vacation Detail Controls -->
+  <div class="form-group">
+      <label>Name of vacation:
+        <input class="form-control" formControlName="name" required>
+      </label>
+  </div>
+  <div class="form-group">
+      <label>Price of vacation:
+        <input class="form-control" formControlName="price" required>
+      </label>
+  </div>
+  <div formArrayName="guests" class="well well-lg">
+    <div *ngFor="let guest of guests.controls; let i=index" [formGroupName]="i" >
+      <!-- The repeated guest template -->
+      <h4>Guest #{{i + 1}}</h4>
+      <div style="margin-left: 1em;">
+                  <div style="float: right; margin-right:5em;">
+                     Total Days: 
+                     {{this.vacation.totalDays}} <br>
+                     Total Price of vacation: 
+                     {{this.vacation.price | currency}}<br>
+                     Cost per day:<br>
+                     <pre *ngIf="this.vacation.totalDays > 0">{{( this.vacation.price / this.vacation.totalDays) | currency}}</pre>
+                     Days spent by this guest: 
+                     {{this.vacation.guests[i].guestDays}}<br>
+                    Total amount due for this guest:<br>
+                     <pre *ngIf="this.vacation.totalDays > 0"> {{(( this.vacation.price / this.vacation.totalDays) * this.vacation.guests[i].guestDays) | currency}}</pre>
+            </div>
+        <div class="form-group">
+          <label>Name:
+            <input class="form-control" formControlName="guestName" required>
+          </label>
+        </div>
+
+       <!--     <div style="float: right; margin-right:5em;">
+                     Total Price: ${{this.vacation.price}}<br>
+            </div>
+            <div style="float: right; margin-right:5em;">
+              <label>
+                     Cost per day:
+                     <p *ngIf="this.vacation.totalDays > 0">${{this.vacation.price / this.vacation.totalDays}}</p><br>
+              </label>
+            </div>
+            <div style="float: right; margin-right:5em;">
+              <label>
+                     Days spend by this guest: {{this.vacation.guests[i].guestDays}}<br>
+              </label>
+            </div>
+            <div style="float: right; margin-right:5em;">
+              <label>
+                     Total amount due for this guest: 
+                     <p *ngIf="this.vacation.totalDays > 0"> ${{(this.vacation.price / this.vacation.totalDays) * this.vacation.guests[i].guestDays}}</p><br>
+              </label>
+            </div>
+            -->
+        <div class="form-group">
+          <label>Total days:
+            <input class="form-control" type="number" formControlName="guestDays" required>
+          </label>
+        </div>
+      </div>
+
+      <br>
+      <hr />
+      <!-- End of the repeated address template -->
+    </div>
+    <button (click)="addGuest()" type="button">Add a guest</button>
+  </div>
+</form>
+
+<!--
+<p>vacationForm value: {{ vacationForm.value | json}}</p>
+<h4>Name change log</h4>
+<div *ngFor="let name of nameChangeLog">{{name}}</div>
+-->

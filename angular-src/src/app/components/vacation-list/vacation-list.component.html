@@ -1,0 +1,13 @@
+<h3 *ngIf="isLoading"><i>Loading vacations ... </i></h3>
+<h3 *ngIf="!isLoading">Select a vacation:</h3>
+<nav>
+  <button (click)="getVacations()" class="btn btn-primary">Refresh</button>
+  <a *ngFor="let vacation of vacations | async" (click)="select(vacation)">{{vacation.name}}</a>
+</nav>
+<facebook-login></facebook-login>
+<div *ngIf="selectedVacation">
+  <hr>
+  <h2>Vacation Detail</h2>
+  <h3>Editing: {{selectedVacation.name}}</h3>
+  <vacation [vacation]="selectedVacation"></vacation>
+</div>
