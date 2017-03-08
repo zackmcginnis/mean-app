@@ -11,8 +11,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { VacationComponent } from './components/vacation/vacation.component';
 import { VacationListComponent } from './components/vacation-list/vacation-list.component';
+import { VacationComponent } from './components/vacation/vacation.component';
 
 import {ValidateService} from './services/validate.service';
 import {AuthService} from './services/auth.service';
@@ -25,7 +25,7 @@ const appRoutes: Routes =  [
   {path:'login', component: LoginComponent},
   {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
   {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
-  {path:'vacation', component: VacationComponent, canActivate:[AuthGuard]}
+  {path:'vacations', component: VacationListComponent, canActivate:[AuthGuard]}
 ]
 
 @NgModule({
@@ -37,8 +37,8 @@ const appRoutes: Routes =  [
     HomeComponent,
     DashboardComponent,
     ProfileComponent,
-    VacationComponent,
-    VacationListComponent
+    VacationListComponent,
+    VacationComponent
   ],
   imports: [
     BrowserModule,

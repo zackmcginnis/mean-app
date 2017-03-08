@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-
-import { Vacation, Guests } from '../models/data-model';
-import { VacationService }           from './vacation.service';
+import {AuthService} from '../../services/auth.service';
+import {Guest, Vacation} from '../../helpers/classes';
 
 @Component({
   selector: 'app-vacation',
@@ -17,7 +16,7 @@ export class VacationComponent implements OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private vacationService: VacationService) {
+    private authService: AuthService) {
     this.createForm();
     this.logNameChange();
   }
@@ -43,14 +42,14 @@ export class VacationComponent implements OnChanges {
     return this.vacationForm.get('guests') as FormArray;
   };
 
-  setGuests(guests: Guests[]) {
+  setGuests(guests: Guest[]) {
     const guestFGs = guests.map(guest => this.fb.group(guest));
     const guestFormArray = this.fb.array(guestFGs);
     this.vacationForm.setControl('guests', guestFormArray);
   }
 
   addGuest() {
-    this.guests.push(this.fb.group(new Guests()));
+    this.guests.push(this.fb.group(new Guest()));
   }
 
   onSubmit() {
@@ -63,15 +62,15 @@ export class VacationComponent implements OnChanges {
     }
     this.vacation.totalDays = days;
 
-    this.vacationService.updateVacation(this.vacation).subscribe(/* error handling */);
+    this.authService.updateVacation(this.vacation).subscribe(/* error handling */);
     this.ngOnChanges();
   }
 
   prepareSaveVacation(): Vacation {
     const formModel = this.vacationForm.value;
     // deep copy of form model guests
-    const guestsDeepCopy: Guests[] = formModel.guests.map(
-      (guest: Guests) => Object.assign({}, guest)
+    const guestsDeepCopy: Guest[] = formModel.guests.map(
+      (guest: Guest) => Object.assign({}, guest)
     );
 
     // return new `Vacation` object containing a combination of original vacation value(s)
@@ -90,7 +89,7 @@ export class VacationComponent implements OnChanges {
   revert() { 
   	this.ngOnChanges(); 
   }
-  
+
   logNameChange() {
     const nameControl = this.vacationForm.get('name');
     nameControl.valueChanges.forEach(

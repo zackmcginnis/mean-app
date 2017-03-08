@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable }        from 'rxjs/Observable';
+import {Router} from '@angular/router';
 import 'rxjs/add/operator/finally';
-import { Vacation }        from '../models/vacation-model';
-import { VacationService } from '../vacation/vacation.service';
+import {AuthService} from '../../services/auth.service';
+import {Guest, Vacation} from '../../helpers/classes';
 
 @Component({
   selector: 'app-vacation-list',
@@ -15,15 +16,24 @@ export class VacationListComponent implements OnInit {
   isLoading = false;
   selectedVacation: Vacation;
 
-  constructor(private vacationService: VacationService) { }
+  constructor(private authService:AuthService, private router:Router) { }
 
-  ngOnInit() { 
-  	this.getVacations(); 
+  ngOnInit() {
+    /*
+    this.authService.getVacations().subscribe(profile => {
+      this.user = profile.user;
+    },
+    err => {
+      console.log(err);
+      return false;
+    });
+    */
+    this.getVacations();
   }
 
   getVacations() {
     this.isLoading = true;
-    this.vacations = this.vacationService.getVacations()
+    this.vacations = this.authService.getVacations()
                       // Todo: error handling
                       .finally(() => this.isLoading = false);
     this.selectedVacation = undefined;

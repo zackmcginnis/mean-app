@@ -7,6 +7,8 @@ import {tokenNotExpired} from 'angular2-jwt';
 export class AuthService {
   authToken: any;
   user: any;
+  vacation: any;
+  guest: any;
 
   constructor(private http:Http) { }
 
@@ -54,4 +56,79 @@ export class AuthService {
     this.user = null;
     localStorage.clear();
   }
+
+///////////////vacation service functions 
+  addVacation(vacation){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.post('http://localhost:3000/users/vacations', vacation,{headers: headers})
+      .map(res => res.json());
+  }
+
+  getVacations(){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
+      .map(res => res.json());
+  }
+
+  updateVacation(vacation){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.get('http://localhost:3000/users/vacations/:name',{headers: headers})
+      .map(res => res.json());
+  }
+
+  deleteVacation(vacation){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.get('http://localhost:3000/users/vacations/:name',{headers: headers})
+      .map(res => res.json());
+  }
+
+///////////////guest service functions
+  addGuest(guest){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.post('http://localhost:3000/users/addvacation', guest,{headers: headers})
+      .map(res => res.json());
+  }
+
+  getGuests(){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
+      .map(res => res.json());
+  }
+
+  updateGuests(guest){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
+      .map(res => res.json());
+  }
+
+  deleteGuest(guest){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
+      .map(res => res.json());
+  }
+
 }
