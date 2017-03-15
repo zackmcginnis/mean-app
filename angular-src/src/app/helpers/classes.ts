@@ -9,5 +9,6 @@ export class Vacation {
 export class Guest {
   guestName = 'Enter guest name';
   guestDays : number  = 0;
+  guestAmount : number = 0;
   guestEmail = 'Enter guest email';
 }

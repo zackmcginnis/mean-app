@@ -1,12 +1,23 @@
 <h3 *ngIf="isLoading"><i>Loading vacations ... </i></h3>
-<h3 *ngIf="!isLoading">Select a vacation:</h3>
+
 <nav>
   <button (click)="getVacations()" class="btn btn-primary">Refresh</button>
-  <a *ngFor="let vacation of vacations | async" (click)="select(vacation)">{{vacation.name}}</a>
 </nav>
-<div *ngIf="selectedVacation">
-  <hr>
-  <h2>Vacation Detail</h2>
-  <h3>Editing: {{selectedVacation.name}}</h3>
-  <app-vacation [vacation]="selectedVacation"></app-vacation>
+<h3 *ngIf="!isLoading">Select a vacation:</h3>
+
+<div class="row">
+	<div class="col-sm-4">
+		<div class="list-group">
+		  <a *ngFor="let vacation of vacations" (click)="select(vacation)">
+			<div class="list-group-item active">
+			{{vacation.name}}
+			</div>		
+		  </a>
+		</div> 
+	</div>
+	<div class="col-sm-8" id="rightside" *ngIf="selectedVacation">
+	  <h2>Vacation Detail</h2>
+	  <h3>Editing: {{selectedVacation.name}}</h3>
+	  <app-vacation [vacation]="selectedVacation"></app-vacation>
+	</div>
 </div>

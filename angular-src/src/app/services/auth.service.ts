@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import {Http, Headers} from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/operator/map';
 import {tokenNotExpired} from 'angular2-jwt';
+import {Guest, Vacation} from '../helpers/classes';
+
 
 @Injectable()
 export class AuthService {
   authToken: any;
   user: any;
-  vacation: any;
+  vacations: any;
   guest: any;
+  private vacationUrl = 'http://localhost:3000/users/vacations';
 
   constructor(private http:Http) { }
 
@@ -67,13 +72,13 @@ export class AuthService {
       .map(res => res.json());
   }
 
-  getVacations(){
+  getVacations(): Observable<any> {
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
-      .map(res => res.json());
+      .map(res => res.json())
   }
 
   updateVacation(vacation){
@@ -81,7 +86,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.get('http://localhost:3000/users/vacations/:name',{headers: headers})
+    return this.http.get('http://localhost:3000/vacations/:name',{headers: headers})
       .map(res => res.json());
   }
 
@@ -90,7 +95,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.get('http://localhost:3000/users/vacations/:name',{headers: headers})
+    return this.http.get('http://localhost:3000/vacations/:name',{headers: headers})
       .map(res => res.json());
   }
 
@@ -100,16 +105,16 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.post('http://localhost:3000/users/addvacation', guest,{headers: headers})
+    return this.http.post('http://localhost:3000/users/vacations/guests', guest,{headers: headers})
       .map(res => res.json());
   }
 
-  getGuests(){
+  getGuests(): Observable<any>{
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
+    return this.http.get('http://localhost:3000/users/vacations/guests',{headers: headers})
       .map(res => res.json());
   }
 

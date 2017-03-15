@@ -38,6 +38,7 @@ const appRoutes: Routes =  [
     DashboardComponent,
     ProfileComponent,
     VacationListComponent,
+    VacationComponent,
     VacationComponent
   ],
   imports: [

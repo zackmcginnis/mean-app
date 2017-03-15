@@ -5,6 +5,7 @@ import {Guest, Vacation} from '../../helpers/classes';
 
 @Component({
   selector: 'app-vacation',
+  providers: [AuthService],
   templateUrl: './vacation.component.html',
   styleUrls: ['./vacation.component.css']
 })
@@ -12,13 +13,12 @@ export class VacationComponent implements OnChanges {
 
   @Input() vacation: Vacation;
   vacationForm: FormGroup;
-  nameChangeLog: string[] = [];
+  savedGuests: Array<Guest> = [];
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService) {
     this.createForm();
-    this.logNameChange();
   }
 
   createForm() {
@@ -36,6 +36,15 @@ export class VacationComponent implements OnChanges {
       totalDays: this.vacation.totalDays
     });
     this.setGuests(this.vacation.guests);
+  }
+
+  getGuestsFromServer() {
+    this.authService.getGuests()
+      .subscribe(
+        savedGuests => {
+          this.savedGuests = savedGuests
+          console.log(this.savedGuests)
+      }) 
   }
 
   get guests(): FormArray {
@@ -88,12 +97,5 @@ export class VacationComponent implements OnChanges {
 
   revert() { 
   	this.ngOnChanges(); 
-  }
-
-  logNameChange() {
-    const nameControl = this.vacationForm.get('name');
-    nameControl.valueChanges.forEach(
-      (value: string) => this.nameChangeLog.push(value)
-    );
   }
 }

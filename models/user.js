@@ -14,7 +14,7 @@ const GuestSchema = mongoose.Schema({
   },
   amount: {
     type: Number,
-    required: true
+    required: false
   },
   email: {
     type: String,
@@ -94,13 +94,19 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 /////////////Vacation Model Functions
 
 module.exports.addVacation = function(newVacation, callback){
-      newVacation.save(callback);
+  User.findOne({_id: userid}, function (err, user) {
+  if (err) {
+    throw err;
+  } else {
+    user.vacations.push(newVacation);
+    newVacation.save(callback);
+  }
+  })
 }
 
 //get vacations
-module.exports.getVacations = function(vacations, callback){
-  const query = {vacations: vacations}
-  User.findOne(query, callback);
+module.exports.getVacationsById = function(userid, callback){
+  User.findOne({_id: userid}, callback);
 }
 
 //update vacation

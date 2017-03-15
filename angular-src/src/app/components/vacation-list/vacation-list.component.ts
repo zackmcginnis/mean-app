@@ -4,17 +4,21 @@ import {Router} from '@angular/router';
 import 'rxjs/add/operator/finally';
 import {AuthService} from '../../services/auth.service';
 import {Guest, Vacation} from '../../helpers/classes';
+import {VacationPipe} from '../../helpers/pipes';
 
 @Component({
   selector: 'app-vacation-list',
+  providers: [AuthService],
   templateUrl: './vacation-list.component.html',
   styleUrls: ['./vacation-list.component.css']
 })
 export class VacationListComponent implements OnInit {
 
-  vacations: Observable<Vacation[]>;
+  vacations: Array<Vacation> = []; //try Vacation[]
   isLoading = false;
   selectedVacation: Vacation;
+  pipe: VacationPipe;
+  args: string[];
 
   constructor(private authService:AuthService, private router:Router) { }
 
@@ -33,13 +37,39 @@ export class VacationListComponent implements OnInit {
 
   getVacations() {
     this.isLoading = true;
-    this.vacations = this.authService.getVacations()
-                      // Todo: error handling
-                      .finally(() => this.isLoading = false);
+    this.authService.getVacations()
+      .subscribe(
+        vacations => {
+          this.vacations = vacations;
+          console.log(this.vacations)
+      })
+    this.isLoading = false
     this.selectedVacation = undefined;
   }
 
   select(vacation: Vacation) { 
   	this.selectedVacation = vacation; 
   }
+
 }
+/*
+{
+  "name": "testvacation",
+  "price": 24423,
+  "guests": [{
+    "name": "jeff",
+    "days": 2,
+    "amount": 0
+    },
+    {
+    "name": "joe",
+    "days": 3,
+    "amount": 0
+    }, 
+    {
+    "name": "jan",
+    "days": 4,
+    "amount": 0
+    }]
+}
+*/
