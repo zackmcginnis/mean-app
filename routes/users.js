@@ -4,6 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
+const Vacation = require('../models/user');
 
 /////////////User routes
 
@@ -13,8 +14,7 @@ router.post('/register', (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     username: req.body.username,
-    password: req.body.password,
-    vacations: null
+    password: req.body.password
   });
 
   User.addUser(newUser, (err, user) => {
@@ -69,37 +69,44 @@ router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res,
 /////////////Vacation routes
 
 //add vacation
-router.post('/vacations', (req, res, next) => {
+router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, res, next) => {
   let newVacation = new Vacation({
     name: req.body.name,
     price: req.body.price,
-    guests: req.body.guests
+    guests: req.body.guests,
+    totalDays: req.body.totalDays,
+    newFlag: req.body.newFlag
+  });
+  console.log("this vacation", newVacation);
+
+  User.getUserByUsername(req.user.username, (err, user) => {
+    if(err) throw err;
+    if(!user){
+      return res.json({success: false, msg: 'User not found'});
+    }
+    User.addVacation(newVacation, user._id, (err, user) => {
+      if(err){
+        console.log("error ->>", err)
+        res.json({success: false, msg:'Failed to add vacation'});
+      } else {
+        res.json({success: true, msg:'vacation created'});
+      }
+    });
   });
 
-  User.addVacation(newVacation, (err, user) => {
-    if(err){
-      res.json({success: false, msg:'Failed to add vacation'});
-    } else {
-      res.json({success: true, msg:'vacation created'});
-    }
-  });
-});
+  })
+
+
 
 // get vacations
 router.get('/vacations', passport.authenticate('jwt', {session:false}), (req, res, next) => {
   //console.log("get vacations", req.user)
   let id = req.user._id;
-  console.log(req.user)
   User.getVacationsById(id, (err, user) => {
     if (err) {
       console.log(err);
         res.status(500).send(err)
     } else {
-      console.log(user.email)
-      console.log(user.vacations)
-      console.log(user)
-
-
       //works, now need to save some vacations
        return res.send(user.vacations);
        //return res.json({vacations: user.vacations})

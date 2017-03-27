@@ -4,19 +4,19 @@ const config = require('../config/database');
 
 // Guests Schema
 const GuestSchema = mongoose.Schema({
-  name: {
+  guestName: {
     type: String,
     required: true
   },
-  days: {
+  guestDays: {
     type: Number,
     required: true
   },
-  amount: {
+  amountOwed: {
     type: Number,
     required: false
   },
-  email: {
+  guestEmail: {
     type: String,
     required: false
   }
@@ -35,6 +35,14 @@ const VacationSchema = mongoose.Schema({
   guests: {
     type: [GuestSchema],
     required: false
+  },
+  totalDays: {
+    type: Number,
+    required: false
+  },
+  newFlag: {
+    type: Boolean,
+    required: true
   }
 });
 
@@ -62,6 +70,7 @@ const UserSchema = mongoose.Schema({
 });
 
 const User = module.exports = mongoose.model('User', UserSchema);
+const Vacation = module.exports = mongoose.model('Vacation', VacationSchema);
 
 /////////////User Model Functions
 
@@ -93,13 +102,13 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 
 /////////////Vacation Model Functions
 
-module.exports.addVacation = function(newVacation, callback){
+module.exports.addVacation = function(newVacation, userid, callback){
   User.findOne({_id: userid}, function (err, user) {
   if (err) {
     throw err;
   } else {
     user.vacations.push(newVacation);
-    newVacation.save(callback);
+    user.save(callback);
   }
   })
 }

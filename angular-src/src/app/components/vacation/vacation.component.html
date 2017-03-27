@@ -1,7 +1,3 @@
-<nav>
-<button (click)="createVacation()" class="btn btn-primary">Create</button>
-</nav>
-
 <form [formGroup]="vacationForm" (ngSubmit)="onSubmit()" novalidate>
   <div style="margin-bottom: 1em">
     <button type="submit"
@@ -28,21 +24,22 @@
             <!-- output of math-->
       </div>
         <div class="form-group">
-          <label>Name:
-            <input class="form-control" formControlName="guestName" required>
-          </label>
-          <br><br>
-          <label>Total days:
-            <input class="form-control" type="number" formControlName="guestDays" required>
-          </label>
-          <br><br>
-          <label>Amount Owed:
-            <input class="form-control" type="number" formControlName="amountOwed">
-          </label>
-          <br><br>
-          <label>Email Address:
-            <input class="form-control" formControlName="guestEmail" required>
-          </label>
+          <button id="delete" (click)="deleteGuest()" class="btn btn-danger">Delete</button>
+            <label>Name:
+              <input class="form-control" formControlName="guestName" required>
+            </label>
+            <br><br>
+            <label>Total days:
+              <input class="form-control" type="number" formControlName="guestDays" required>
+            </label>
+            <br><br>
+            <label>Amount Owed:
+              <input class="form-control" type="number" formControlName="amountOwed">
+            </label>
+            <br><br>
+            <label>Email Address:
+              <input class="form-control" formControlName="guestEmail" required>
+            </label>
         </div>
       </div>
 

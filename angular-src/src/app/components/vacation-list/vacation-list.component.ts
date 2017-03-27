@@ -17,8 +17,7 @@ export class VacationListComponent implements OnInit {
   vacations: Array<Vacation> = []; //try Vacation[]
   isLoading = false;
   selectedVacation: Vacation;
-  pipe: VacationPipe;
-  args: string[];
+  newvacation = new Vacation;
 
   constructor(private authService:AuthService, private router:Router) { }
 
@@ -41,7 +40,6 @@ export class VacationListComponent implements OnInit {
       .subscribe(
         vacations => {
           this.vacations = vacations;
-          console.log(this.vacations)
       })
     this.isLoading = false
     this.selectedVacation = undefined;
@@ -51,6 +49,10 @@ export class VacationListComponent implements OnInit {
   	this.selectedVacation = vacation; 
   }
 
+  createVacation(){
+    this.selectedVacation = this.newvacation;
+    this.selectedVacation.name = "New Vacation";
+  }
 }
 /*
 {
