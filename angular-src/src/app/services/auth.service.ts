@@ -70,7 +70,7 @@ export class AuthService {
     console.log(vacation)
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.post('http://localhost:3000/users/vacations', vacation,{headers: headers})
+    return this.http.post('http://localhost:3000/users/vacations', vacation, {headers: headers})
       .map(res => res.json())
       .subscribe(
         data => console.log(data),
@@ -93,17 +93,28 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.put('http://localhost:3000/vacations/:name',{headers: headers})
-      .map(res => res.json());
+    return this.http.put('http://localhost:3000/users/vacations/edit', vacation, {headers: headers})
+      .map(res => res.json())
+      .subscribe(
+        data => console.log(data),
+        err => console.log(err),
+        () => console.log('yay')
+      );
   }
 
   deleteVacation(vacation){
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
+    console.log("deleting this vacation", vacation)
     headers.append('Content-Type','application/json');
-    return this.http.delete('http://localhost:3000/vacations/:name',{headers: headers})
-      .map(res => res.json());
+    return this.http.put('http://localhost:3000/users/vacations/delete', vacation, {headers: headers})
+      .map(res => res.json())
+      .subscribe(
+        data => console.log(data),
+        err => console.log(err),
+        () => console.log('yay')
+      );
   }
 
 ///////////////guest service functions

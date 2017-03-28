@@ -119,27 +119,31 @@ module.exports.getVacationsById = function(userid, callback){
 }
 
 //update vacation
-module.exports.updateVacation = function(username, callback){
-  User.findById(req.params.vacations.name, function(err, p) {
-    if (!p)
-      return next(new Error('Could not load Document'));
-    else {
-      // do your updates here
-      p.modified = new Date();
-
-      p.save(function(err) {
-        if (err)
-          console.log('error')
-        else
-          console.log('success')
-      });
+module.exports.updateVacation = function(updated, user, callback){
+  User.update(
+     { "vacations._id": updated._id }, 
+     {'$set': {
+    'vacations.$': updated
+    //'vacations.$.value': 'two updated'
     }
-  });
+  }, function(err, update) { 
+    if (err) throw err;
+    console.log(update);
+  })
 }
-//delete vacation
-module.exports.deleteVacation = function(username, callback){
 
+//delete vacation
+module.exports.deleteVacation = function(vacation, user, callback){
+  User.update(
+  { },
+  { $pull: { vacations: { _id: vacation._id } } },
+  { multi: true 
+  }, function(err, update) { 
+    if (err) throw err;
+    console.log(update);
+  })
 }
+
 /////////////Guest Model Functions
 module.exports.addGuest = function(newGuest, callback){
       newGuest.save(callback);

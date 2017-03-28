@@ -4,6 +4,7 @@ export class Vacation {
   totalDays : number = 0;
   guests: Guest[];
   newFlag: Boolean = true;
+  _id?: any;
 }
 
 export class Guest {

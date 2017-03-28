@@ -3,7 +3,9 @@
     <button type="submit"
             [disabled]="vacationForm.pristine" class="btn btn-success">Submit</button> &nbsp;
     <button type="reset" (click)="revert()"
-            [disabled]="vacationForm.pristine" class="btn btn-danger">Revert</button>
+            [disabled]="vacationForm.pristine" class="btn btn-warning">Revert</button>
+    <button type="delete" (click)="delete()"
+             class="btn btn-danger">Delete Vacation</button>
   </div>
   <!-- Vacation Detail Controls -->
   <div class="form-group" id="nameandprice">

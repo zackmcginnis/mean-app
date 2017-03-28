@@ -93,10 +93,7 @@ router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, r
       }
     });
   });
-
-  })
-
-
+})
 
 // get vacations
 router.get('/vacations', passport.authenticate('jwt', {session:false}), (req, res, next) => {
@@ -115,36 +112,46 @@ router.get('/vacations', passport.authenticate('jwt', {session:false}), (req, re
 })
 
 //Update Vacation
-router.put('/vacations/:name', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.put('/vacations/edit', passport.authenticate('jwt', {session:false}), (req, res, next) => {
   let updated = new Vacation({
     name: req.body.name,
     price: req.body.price,
-    guests: req.body.guests
+    guests: req.body.guests,
+    totalDays: req.body.totalDays,
+    newFlag: req.body.newFlag,
+    _id: req.body._id
   });
 
-  User.updateVacation(updated, (err, user) => {
-    if(err){
-      res.json({success: false, msg:'Failed to update vacation'});
-    } else {
-      res.json({success: true, msg:'vacation updated'});
+  User.getUserByUsername(req.user.username, (err, thisuser) => {
+    if(err) throw err;
+    if(!thisuser){
+      return res.json({success: false, msg: 'User not found'});
     }
+
+    User.updateVacation(updated, thisuser, (err, user) => {
+      if(err){
+        res.json({success: false, msg:'Failed to update vacation'});
+      } else {
+        res.json({success: true, msg:'vacation updated'});
+      }
+    });
   });
-});
+})
 
 // Delete Vacation
-router.delete('/vacations/:name', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  Article.findById(req.params.name, function (err, vacation) {
-    if(err) { 
-      return next(err); 
+router.put('/vacations/delete', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  User.getUserByUsername(req.user.username, (err, thisuser) => {
+    if(err) throw err;
+    if(!thisuser){
+      return res.json({success: false, msg: 'User not found'});
     }
-    if(!vacation) { 
-      return res.send(404); 
-    }
-    vacation.remove(function(err) {
-      if(err) { 
-        return handleError(res, err); 
+
+    User.deleteVacation(req.body, thisuser, (err, user) => {
+      if(err){
+        res.json({success: false, msg:'Failed to delete vacation'});
+      } else {
+        res.json({success: true, msg:'vacation deleted'});
       }
-      return res.send(204);
     });
   });
 });

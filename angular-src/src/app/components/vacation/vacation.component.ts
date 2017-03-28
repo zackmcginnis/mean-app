@@ -83,6 +83,7 @@ export class VacationComponent implements OnChanges {
     } else {
       this.authService.updateVacation(this.vacation);
       console.log("updating existing vacation")
+      console.log(this.vacation)
     }
     this.ngOnChanges();
   }
@@ -101,10 +102,10 @@ export class VacationComponent implements OnChanges {
       name: formModel.name as string,
       price: formModel.price as number,
       totalDays: this.vacation.totalDays as number,
-      // addresses: formModel.secretLairs // <-- bad!
       guests: guestsDeepCopy,
       newFlag: this.vacation.newFlag
     };
+    saveVacation._id = this.vacation._id;
     return saveVacation;
   }
 
@@ -114,5 +115,10 @@ export class VacationComponent implements OnChanges {
 
   revert() { 
   	this.ngOnChanges(); 
+  }
+
+  delete() {
+    this.authService.deleteVacation(this.vacation);
+    console.log("deleting existing vacation")
   }
 }
