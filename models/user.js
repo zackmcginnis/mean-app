@@ -84,10 +84,8 @@ module.exports.getUserByUsername = function(username, callback){
 }
 
 module.exports.addUser = function(newUser, callback){
+  console.log("from model...", newUser)
   bcrypt.genSalt(10, (err, salt) => {
-    console.log(newUser.password)
-        console.log(salt)
-
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if(err) {
         throw err;
