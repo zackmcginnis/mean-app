@@ -16,9 +16,13 @@
 		  </a>
 		</div> 
 	</div>
-	<div class="col-sm-8" id="rightside" *ngIf="selectedVacation">
+	<div class="col-sm-4" id="rightside" *ngIf="selectedVacation">
 	  <h2>Vacation Detail</h2>
 	  <h3>Editing: {{selectedVacation.name}}</h3>
 	  <app-vacation [vacation]="selectedVacation"></app-vacation>
+	</div>
+	<div class="col-sm-4" id="result" *ngIf="selectedVacation">
+	  <h2>Pricing Breakdown</h2>
+	  <app-result [vacation]="selectedVacation"></app-result>
 	</div>
 </div>

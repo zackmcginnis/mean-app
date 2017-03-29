@@ -26,17 +26,13 @@
             <!-- output of math-->
       </div>
         <div class="form-group">
-          <button id="delete" (click)="deleteGuest()" class="btn btn-danger">Delete</button>
+          <button id="delete" (click)="deleteGuest(i)" class="btn btn-danger">Delete</button>
             <label>Name:
               <input class="form-control" formControlName="guestName" required>
             </label>
             <br><br>
             <label>Total days:
               <input class="form-control" type="number" formControlName="guestDays" required>
-            </label>
-            <br><br>
-            <label>Amount Owed:
-              <input class="form-control" type="number" formControlName="amountOwed">
             </label>
             <br><br>
             <label>Email Address:

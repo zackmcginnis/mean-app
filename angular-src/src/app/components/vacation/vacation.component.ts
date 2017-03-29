@@ -86,6 +86,7 @@ export class VacationComponent implements OnChanges {
       console.log(this.vacation)
     }
     this.ngOnChanges();
+
   }
 
 
@@ -106,11 +107,12 @@ export class VacationComponent implements OnChanges {
       newFlag: this.vacation.newFlag
     };
     saveVacation._id = this.vacation._id;
+    saveVacation.guests = this.calculateTotal(saveVacation, saveVacation.guests);
     return saveVacation;
   }
 
-  deleteGuest(){
-
+  deleteGuest(index){
+    this.guests.removeAt(index);
   }
 
   revert() { 
@@ -120,5 +122,26 @@ export class VacationComponent implements OnChanges {
   delete() {
     this.authService.deleteVacation(this.vacation);
     console.log("deleting existing vacation")
+  }
+
+  calculateTotal(vacation: Vacation, guests: Guest[]){
+    let allGuests = vacation.guests;
+    let price = vacation.price;
+    let vacationDays = vacation.totalDays;
+    let costPerDay: number;
+    let guestTotal: number;
+
+    console.log("check", price)
+        console.log("check", vacationDays)
+
+    costPerDay = price / vacationDays;
+
+    for (let gg of allGuests){
+      if (vacationDays == 0) return guests;
+
+      gg.amountOwed = gg.guestDays * costPerDay;
+    }
+    console.log("guests after calc...", guests)
+    return guests;
   }
 }
