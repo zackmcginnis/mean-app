@@ -20,14 +20,16 @@ export class AuthService {
   registerUser(user){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
-    return this.http.post('http://localhost:3000/users/register', user,{headers: headers})
+    //return this.http.post('http://localhost:3000/users/register', user,{headers: headers})
+    return this.http.post('users/register', user,{headers: headers})
+
       .map(res => res.json());
   }
 
   authenticateUser(user){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
-    return this.http.post('http://localhost:3000/users/authenticate', user,{headers: headers})
+    return this.http.post('users/authenticate', user,{headers: headers})
       .map(res => res.json());
   }
 
@@ -36,7 +38,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.get('http://localhost:3000/users/profile',{headers: headers})
+    return this.http.get('users/profile',{headers: headers})
       .map(res => res.json());
   }
 
@@ -70,7 +72,7 @@ export class AuthService {
     console.log(vacation)
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.post('http://localhost:3000/users/vacations', vacation, {headers: headers})
+    return this.http.post('users/vacations', vacation, {headers: headers})
       .map(res => res.json())
       .subscribe(
         data => console.log(data),
@@ -84,7 +86,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
+    return this.http.get('users/vacations',{headers: headers})
       .map(res => res.json())
   }
 
@@ -93,7 +95,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.put('http://localhost:3000/users/vacations/edit', vacation, {headers: headers})
+    return this.http.put('users/vacations/edit', vacation, {headers: headers})
       .map(res => res.json())
       .subscribe(
         data => console.log(data),
@@ -108,7 +110,7 @@ export class AuthService {
     headers.append('Authorization', this.authToken);
     console.log("deleting this vacation", vacation)
     headers.append('Content-Type','application/json');
-    return this.http.put('http://localhost:3000/users/vacations/delete', vacation, {headers: headers})
+    return this.http.put('users/vacations/delete', vacation, {headers: headers})
       .map(res => res.json())
       .subscribe(
         data => console.log(data),
@@ -123,7 +125,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.post('http://localhost:3000/users/vacations/guests', guest,{headers: headers})
+    return this.http.post('users/vacations/guests', guest,{headers: headers})
       .map(res => res.json());
   }
 
@@ -132,7 +134,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.get('http://localhost:3000/users/vacations/guests',{headers: headers})
+    return this.http.get('users/vacations/guests',{headers: headers})
       .map(res => res.json());
   }
 
@@ -141,7 +143,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
+    return this.http.get('users/vacations',{headers: headers})
       .map(res => res.json());
   }
 
@@ -150,7 +152,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    return this.http.get('http://localhost:3000/users/vacations',{headers: headers})
+    return this.http.get('users/vacations',{headers: headers})
       .map(res => res.json());
   }
 
