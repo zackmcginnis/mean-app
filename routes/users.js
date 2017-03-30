@@ -10,7 +10,7 @@ const Vacation = require('../models/user');
 
 // Register
 router.post('/register', (req, res, next) => {
-  let newUser = new User({
+  let newUser = new user({
     name: req.body.name,
     email: req.body.email,
     username: req.body.username,
