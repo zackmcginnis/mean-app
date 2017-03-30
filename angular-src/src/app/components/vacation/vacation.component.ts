@@ -69,16 +69,17 @@ export class VacationComponent implements OnChanges {
 
   //submitting changes/edits to old vacation
   onSubmit() {
-    this.vacation = this.prepareSaveVacation();
     //calculate total days by all guests in vacation
     //assign to this.vacation
     var days: number = 0;
     for (var i=0; i<this.vacation.guests.length; i++){
       days += this.vacation.guests[i].guestDays;
     }
-    this.vacation.totalDays = days;
+    this.vacation.totalDays = days;  
+    this.vacation = this.prepareSaveVacation();
+
     if (this.vacation.newFlag) {
-      this.vacation.guests = this.calculateTotal(this.vacation, this.vacation.guests);
+      //this.vacation.guests = this.calculateTotal(this.vacation, this.vacation.guests);
       this.authService.addVacation(this.vacation);
       console.log("creating new vacation")
     } else {
