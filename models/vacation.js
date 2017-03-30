@@ -1,6 +1,26 @@
 const mongoose = require('mongoose');
 const config = require('../config/database');
 
+// Guests Schema
+const GuestSchema = mongoose.Schema({
+  guestName: {
+    type: String,
+    required: true
+  },
+  guestDays: {
+    type: Number,
+    required: true
+  },
+  amountOwed: {
+    type: Number,
+    required: false
+  },
+  guestEmail: {
+    type: String,
+    required: false
+  }
+});
+
 // Vacation Schema
 const VacationSchema = mongoose.Schema({
   name: {
