@@ -80,12 +80,12 @@ router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, r
   });
   console.log("this vacation", newVacation);
 
-  User.getUserByUsername(req.user.username, (err, user) => {
+  user.getUserByUsername(req.user.username, (err, user) => {
     if(err) throw err;
     if(!user){
       return res.json({success: false, msg: 'User not found'});
     }
-    User.addVacation(newVacation, user._id, (err, user) => {
+    user.addVacation(newVacation, user._id, (err, user) => {
       if(err){
         console.log("error ->>", err)
         res.json({success: false, msg:'Failed to add vacation'});
@@ -100,7 +100,7 @@ router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, r
 router.get('/vacations', passport.authenticate('jwt', {session:false}), (req, res, next) => {
   //console.log("get vacations", req.user)
   let id = req.user._id;
-  User.getVacationsById(id, (err, user) => {
+  user.getVacationsById(id, (err, user) => {
     if (err) {
       console.log(err);
         res.status(500).send(err)
@@ -123,13 +123,13 @@ router.put('/vacations/edit', passport.authenticate('jwt', {session:false}), (re
     _id: req.body._id
   });
 
-  User.getUserByUsername(req.user.username, (err, thisuser) => {
+  user.getUserByUsername(req.user.username, (err, thisuser) => {
     if(err) throw err;
     if(!thisuser){
       return res.json({success: false, msg: 'User not found'});
     }
 
-    User.updateVacation(updated, thisuser, (err, user) => {
+    user.updateVacation(updated, thisuser, (err, user) => {
       if(err){
         res.json({success: false, msg:'Failed to update vacation'});
       } else {
@@ -141,13 +141,13 @@ router.put('/vacations/edit', passport.authenticate('jwt', {session:false}), (re
 
 // Delete Vacation
 router.put('/vacations/delete', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  User.getUserByUsername(req.user.username, (err, thisuser) => {
+  user.getUserByUsername(req.user.username, (err, thisuser) => {
     if(err) throw err;
     if(!thisuser){
       return res.json({success: false, msg: 'User not found'});
     }
 
-    User.deleteVacation(req.body, thisuser, (err, user) => {
+    user.deleteVacation(req.body, thisuser, (err, user) => {
       if(err){
         res.json({success: false, msg:'Failed to delete vacation'});
       } else {
@@ -160,21 +160,6 @@ router.put('/vacations/delete', passport.authenticate('jwt', {session:false}), (
 /////////////Guest routes
 
 //add Guest
-router.post('/guests', (req, res, next) => {
-  let newGuest = new Guest({
-    name: req.body.name,
-    price: req.body.price,
-    guests: req.body.guests
-  });
-
-  User.addVacation(newVacation, (err, user) => {
-    if(err){
-      res.json({success: false, msg:'Failed to register user'});
-    } else {
-      res.json({success: true, msg:'User registered'});
-    }
-  });
-});
 
 // get Guest
 router.get('/guests', passport.authenticate('jwt', {session:false}), (req, res, next) => {
@@ -182,21 +167,6 @@ router.get('/guests', passport.authenticate('jwt', {session:false}), (req, res, 
 });
 
 //Update Guest
-router.put('/vacations/:name/guests', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  let updated = new Vacation({
-    name: req.body.name,
-    price: req.body.price,
-    guests: req.body.guests
-  });
-
-  User.updateVacation(updated, (err, user) => {
-    if(err){
-      res.json({success: false, msg:'Failed to register user'});
-    } else {
-      res.json({success: true, msg:'User registered'});
-    }
-  });
-});
 
 
 // Delete Guest
