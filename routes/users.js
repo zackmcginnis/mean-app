@@ -17,6 +17,8 @@ router.post('/register', (req, res, next) => {
     password: req.body.password
   });
     console.log("from routes...", newUser)
+    console.log("from routes...", req.body)
+    console.log("from routes...", req)
   user.addUser(newUser, (err, user) => {
 
     if(err){

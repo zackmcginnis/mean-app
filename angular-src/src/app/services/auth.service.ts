@@ -13,7 +13,6 @@ export class AuthService {
   user: any;
   vacations: any;
   guest: any;
-  private vacationUrl = 'http://localhost:3000/users/vacations';
 
   constructor(private http:Http) { }
 
