@@ -16,10 +16,8 @@ router.post('/register', (req, res, next) => {
     password: req.body.password
   });
   //perform validation here as well
-  
-    console.log("from routes...", newUser)
-    console.log("from routes...", req.body)
-  user.addUser(req.body, (err, user) => {
+
+  user.addUser(newUser, (err, user) => {
 
     if(err){
       res.json({success: false, msg:'Failed to register user'});
