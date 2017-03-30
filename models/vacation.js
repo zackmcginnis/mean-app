@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const config = require('../config/database');
+
 // Vacation Schema
 const VacationSchema = mongoose.Schema({
   name: {
