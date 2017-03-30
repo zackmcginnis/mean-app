@@ -69,18 +69,18 @@ const UserSchema = mongoose.Schema({
   }
 });
 
-const vacation = module.exports = mongoose.model('Vacation', VacationSchema);
-const user = module.exports = mongoose.model('user', UserSchema);
+const Vacation = module.exports = mongoose.model('Vacation', VacationSchema);
+const User = module.exports = mongoose.model('User', UserSchema);
 
 /////////////User Model Functions
 
 module.exports.getUserById = function(id, callback){
-  user.findById(id, callback);
+  User.findById(id, callback);
 }
 
 module.exports.getUserByUsername = function(username, callback){
   const query = {username: username}
-  user.findOne(query, callback);
+  User.findOne(query, callback);
 }
 
 module.exports.addUser = function(newUser, callback){
@@ -106,7 +106,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 /////////////Vacation Model Functions
 
 module.exports.addVacation = function(newVacation, userid, callback){
-  user.findOne({_id: userid}, function (err, user) {
+  User.findOne({_id: userid}, function (err, user) {
   if (err) {
     throw err;
   } else {
@@ -118,12 +118,12 @@ module.exports.addVacation = function(newVacation, userid, callback){
 
 //get vacations
 module.exports.getVacationsById = function(userid, callback){
-  user.findOne({_id: userid}, callback);
+  User.findOne({_id: userid}, callback);
 }
 
 //update vacation
 module.exports.updateVacation = function(updated, user, callback){
-  user.update(
+  User.update(
      { "vacations._id": updated._id }, 
      {'$set': {
     'vacations.$': updated
@@ -137,7 +137,7 @@ module.exports.updateVacation = function(updated, user, callback){
 
 //delete vacation
 module.exports.deleteVacation = function(vacation, user, callback){
-  user.update(
+  User.update(
   { },
   { $pull: { vacations: { _id: vacation._id } } },
   { multi: true 
@@ -155,7 +155,7 @@ module.exports.addGuest = function(newGuest, callback){
 //get guests
 module.exports.getGuests = function(guests, callback){
   const query = {username: username}
-  user.findOne(query, callback);
+  User.findOne(query, callback);
 }
 
 //update guests
@@ -165,7 +165,7 @@ module.exports.updateGuests = function(guest, callback){
 
 //delete guest
 module.exports.deleteGuest = function(guest, callback){
-  user.findById(req.params.name, function (err, guest) {
+  User.findById(req.params.name, function (err, guest) {
     if(err) { 
       return next(err); 
     }

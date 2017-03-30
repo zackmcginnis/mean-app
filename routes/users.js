@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
-const user = require('../models/user');
+const User = require('../models/user');
 
 /////////////User routes
 
@@ -17,7 +17,7 @@ router.post('/register', (req, res, next) => {
   });
   //perform validation here as well
 
-  user.addUser(newUser, (err, user) => {
+  User.addUser(newUser, (err, user) => {
 
     if(err){
       res.json({success: false, msg:'Failed to register user'});
@@ -32,13 +32,13 @@ router.post('/authenticate', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  user.getUserByUsername(username, (err, user) => {
+  User.getUserByUsername(username, (err, user) => {
     if(err) throw err;
     if(!user){
       return res.json({success: false, msg: 'User not found'});
     }
 
-    user.comparePassword(password, user.password, (err, isMatch) => {
+    User.comparePassword(password, user.password, (err, isMatch) => {
       if(err) throw err;
       if(isMatch){
         const token = jwt.sign(user, config.secret, {
@@ -80,12 +80,12 @@ router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, r
   });
   console.log("this vacation", newVacation);
 
-  user.getUserByUsername(req.user.username, (err, user) => {
+  User.getUserByUsername(req.user.username, (err, user) => {
     if(err) throw err;
     if(!user){
       return res.json({success: false, msg: 'User not found'});
     }
-    user.addVacation(newVacation, user._id, (err, user) => {
+    User.addVacation(newVacation, user._id, (err, user) => {
       if(err){
         console.log("error ->>", err)
         res.json({success: false, msg:'Failed to add vacation'});
@@ -100,7 +100,7 @@ router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, r
 router.get('/vacations', passport.authenticate('jwt', {session:false}), (req, res, next) => {
   //console.log("get vacations", req.user)
   let id = req.user._id;
-  user.getVacationsById(id, (err, user) => {
+  User.getVacationsById(id, (err, user) => {
     if (err) {
       console.log(err);
         res.status(500).send(err)
@@ -123,13 +123,13 @@ router.put('/vacations/edit', passport.authenticate('jwt', {session:false}), (re
     _id: req.body._id
   });
 
-  user.getUserByUsername(req.user.username, (err, thisuser) => {
+  User.getUserByUsername(req.user.username, (err, thisuser) => {
     if(err) throw err;
     if(!thisuser){
       return res.json({success: false, msg: 'User not found'});
     }
 
-    user.updateVacation(updated, thisuser, (err, user) => {
+    User.updateVacation(updated, thisuser, (err, user) => {
       if(err){
         res.json({success: false, msg:'Failed to update vacation'});
       } else {
@@ -141,13 +141,13 @@ router.put('/vacations/edit', passport.authenticate('jwt', {session:false}), (re
 
 // Delete Vacation
 router.put('/vacations/delete', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  user.getUserByUsername(req.user.username, (err, thisuser) => {
+  User.getUserByUsername(req.user.username, (err, thisuser) => {
     if(err) throw err;
     if(!thisuser){
       return res.json({success: false, msg: 'User not found'});
     }
 
-    user.deleteVacation(req.body, thisuser, (err, user) => {
+    User.deleteVacation(req.body, thisuser, (err, user) => {
       if(err){
         res.json({success: false, msg:'Failed to delete vacation'});
       } else {
