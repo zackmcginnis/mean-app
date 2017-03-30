@@ -91,7 +91,8 @@ module.exports.addUser = function(newUser, callback){
         throw err;
       }
       newUser.password = hash;
-      newUser.save(callback);
+      newUser.save(function (err) {if (err) console.log ('Error on save!')});
+      //newUser.save(callback);
     });
   });
 }
