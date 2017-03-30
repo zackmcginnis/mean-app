@@ -69,7 +69,7 @@ const UserSchema = mongoose.Schema({
   }
 });
 
-const user = module.exports = mongoose.model('User', UserSchema);
+const user = module.exports = mongoose.model('user', UserSchema);
 const vacation = module.exports = mongoose.model('Vacation', VacationSchema);
 
 /////////////User Model Functions

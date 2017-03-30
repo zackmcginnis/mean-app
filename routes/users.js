@@ -4,7 +4,6 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const user = require('../models/user');
-const Vacation = require('../models/user');
 
 /////////////User routes
 
@@ -18,7 +17,6 @@ router.post('/register', (req, res, next) => {
   });
     console.log("from routes...", newUser)
     console.log("from routes...", req.body)
-    console.log("from routes...", req)
   user.addUser(newUser, (err, user) => {
 
     if(err){
