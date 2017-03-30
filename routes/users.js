@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
-const Vacation = require('../angular-src/src/app/helpers/classes');
+const Vacation = require('../models/vacation');
 const User = require('../models/user');
 
 /////////////User routes
