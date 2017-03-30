@@ -131,19 +131,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AuthService = (function () {
     function AuthService(http) {
         this.http = http;
-        this.vacationUrl = 'http://localhost:3000/users/vacations';
+        this.isDep = true; //change to false if developing locally
     }
     AuthService.prototype.registerUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
+        console.log("browser...", user);
+        var ep = this.prepEndpoint('users/register');
         //return this.http.post('http://localhost:3000/users/register', user,{headers: headers})
-        return this.http.post('users/register', user, { headers: headers })
+        return this.http.post(ep, user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.authenticateUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('users/authenticate', user, { headers: headers })
+        var ep = this.prepEndpoint('users/authenticate');
+        return this.http.post(ep, user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.getProfile = function () {
@@ -151,7 +154,8 @@ var AuthService = (function () {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('users/profile', { headers: headers })
+        var ep = this.prepEndpoint('users/profile');
+        return this.http.get(ep, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.storeUserData = function (token, user) {
@@ -178,36 +182,40 @@ var AuthService = (function () {
         this.loadToken();
         vacation.newFlag = false;
         console.log(vacation);
+        var ep = this.prepEndpoint('users/vacations');
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.post('users/vacations', vacation, { headers: headers })
+        return this.http.post(ep, vacation, { headers: headers })
             .map(function (res) { return res.json(); })
             .subscribe(function (data) { return console.log(data); }, function (err) { return console.log(err); }, function () { return console.log('yay'); });
     };
     AuthService.prototype.getVacations = function () {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         this.loadToken();
+        var ep = this.prepEndpoint('users/vacations');
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('users/vacations', { headers: headers })
+        return this.http.get(ep, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.updateVacation = function (vacation) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         this.loadToken();
+        var ep = this.prepEndpoint('users/vacations/edit');
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.put('users/vacations/edit', vacation, { headers: headers })
+        return this.http.put(ep, vacation, { headers: headers })
             .map(function (res) { return res.json(); })
             .subscribe(function (data) { return console.log(data); }, function (err) { return console.log(err); }, function () { return console.log('yay'); });
     };
     AuthService.prototype.deleteVacation = function (vacation) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         this.loadToken();
+        var ep = this.prepEndpoint('users/vacations/delete');
         headers.append('Authorization', this.authToken);
         console.log("deleting this vacation", vacation);
         headers.append('Content-Type', 'application/json');
-        return this.http.put('users/vacations/delete', vacation, { headers: headers })
+        return this.http.put(ep, vacation, { headers: headers })
             .map(function (res) { return res.json(); })
             .subscribe(function (data) { return console.log(data); }, function (err) { return console.log(err); }, function () { return console.log('yay'); });
     };
@@ -215,34 +223,47 @@ var AuthService = (function () {
     AuthService.prototype.addGuest = function (guest) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         this.loadToken();
+        var ep = this.prepEndpoint('users/vacations/guests');
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.post('users/vacations/guests', guest, { headers: headers })
+        return this.http.post(ep, guest, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.getGuests = function () {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         this.loadToken();
+        var ep = this.prepEndpoint('users/vacations/guests');
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('users/vacations/guests', { headers: headers })
+        return this.http.get(ep, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.updateGuests = function (guest) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         this.loadToken();
+        var ep = this.prepEndpoint('users/vacations');
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('users/vacations', { headers: headers })
+        return this.http.get(ep, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.deleteGuest = function (guest) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         this.loadToken();
+        var ep = this.prepEndpoint('users/vacations');
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('users/vacations', { headers: headers })
+        return this.http.get(ep, { headers: headers })
             .map(function (res) { return res.json(); });
+    };
+    AuthService.prototype.prepEndpoint = function (ep) {
+        if (this.isDep) {
+            return ep;
+        }
+        else {
+            //return 'http://localhost:8080/'+ep;
+            return 'http://localhost:3000/' + ep;
+        }
     };
     AuthService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(), 
@@ -946,7 +967,6 @@ var VacationComponent = (function () {
     };
     //submitting changes/edits to old vacation
     VacationComponent.prototype.onSubmit = function () {
-        this.vacation = this.prepareSaveVacation();
         //calculate total days by all guests in vacation
         //assign to this.vacation
         var days = 0;
@@ -954,7 +974,9 @@ var VacationComponent = (function () {
             days += this.vacation.guests[i].guestDays;
         }
         this.vacation.totalDays = days;
+        this.vacation = this.prepareSaveVacation();
         if (this.vacation.newFlag) {
+            //this.vacation.guests = this.calculateTotal(this.vacation, this.vacation.guests);
             this.authService.addVacation(this.vacation);
             console.log("creating new vacation");
         }
@@ -1178,7 +1200,7 @@ module.exports = "<h2 class=\"page-header\">Dashboard</h2>\n<p>Welcome to your d
 /***/ 690:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron text-center\">\n  <h1>MEAN Authentication App</h1>\n  <p class=\"lead\">Welcome to our custom MEAN authentication application built from scratch</p>\n  <div>\n    <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a> <a class=\"btn btn-default\" [routerLink]=\"['/login']\">Login</a>\n  </div>\n</div>\n\n<div class=\"row\">\n  <div class=\"col-md-4\">\n    <h3>Express Backend</h3>\n    <p>A rock solid Node.js/Express server using Mongoose to organize models and query the database</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Angular-CLI</h3>\n    <p>Angular-CLI to generate components, services and more. Local dev server and easy compilation</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>JWT Tokens</h3>\n    <p>Full featured authentication using JSON web tokens. Login and store user data</p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"jumbotron text-center\">\n  <h1>Group Vacation/Airbnb Calculator</h1>\n  <p class=\"lead\">Welcome to our custom vacation calculator. This service specializes provides a cost breakdown to each guest on the vacation proportional to the days they will attend the vacation. </p>\n  <div>\n    <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a> <a class=\"btn btn-default\" [routerLink]=\"['/login']\">Login</a>\n  </div>\n</div>\n\n<div class=\"row\">\n  <div class=\"col-md-4\">\n    <h3>End conflicts among guests!</h3>\n    <p>Eliminate the challenges of determining who owes what amount when traveling on a multi-day, multi-guest vacation</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Send them a cost breakdown!</h3>\n    <p>Our printable pdf service can also be sent to your guest's email addresses, showing exactly who owes what and why</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Connect with Airbnb/Venmo </h3>\n    <p>To be added in the future</p>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1192,7 +1214,7 @@ module.exports = "<h2 class=\"page-header\">Login</h2>\n<form (submit)=\"onLogin
 /***/ 692:
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-default\">\n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\">MEAN Auth App</a>\n        </div>\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n          <ul class=\"nav navbar-nav navbar-left\">\n            <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/']\">Home</a></li>\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/profile']\">Profile</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/vacations']\">Vacations</a></li>\n\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Login</a></li>\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Register</a></li>\n            <li *ngIf=\"authService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n          </ul>\n        </div><!--/.nav-collapse -->\n      </div>\n    </nav>\n"
+module.exports = "<nav class=\"navbar navbar-default\">\n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\">Vacation/Airbnb Group Calculator</a>\n        </div>\n\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n          <ul class=\"nav navbar-nav navbar-left\">\n            <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/']\">Home</a></li>\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/profile']\">Profile</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/vacations']\">Vacations</a></li>\n\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Login</a></li>\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Register</a></li>\n            <li *ngIf=\"authService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n            <li class=\"dropdown\">\n              <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">HEADING4<span class=\"caret\"></span></a>\n\n              <ul class=\"dropdown-menu\" role=\"menu\">\n                <li><a href=\"#bmiform\">SomeThing</a></li>\n                <li><a href=\"#\">SomeThingElse</a></li>\n                <li><a href=\"#\">SomeThingElse</a></li>\n                <li class=\"divider\"></li>\n                <li><a href=\"#\">SomeThingElse</a></li>\n                <li class=\"divider\"></li>\n                <li><a href=\"#\">SomeThingElse</a></li>\n              </ul>\n\n            </li>\n          </ul>\n        </div><!--/.nav-collapse -->\n\n      </div>\n    </nav>\n"
 
 /***/ }),
 
