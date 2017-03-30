@@ -78,6 +78,7 @@ export class VacationComponent implements OnChanges {
     }
     this.vacation.totalDays = days;
     if (this.vacation.newFlag) {
+      this.vacation.guests = this.calculateTotal(this.vacation, this.vacation.guests);
       this.authService.addVacation(this.vacation);
       console.log("creating new vacation")
     } else {
