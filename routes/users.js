@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
+const Vacation = require('../models/user');
 const User = require('../models/user');
 
 /////////////User routes
