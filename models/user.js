@@ -69,8 +69,8 @@ const UserSchema = mongoose.Schema({
   }
 });
 
-const user = module.exports = mongoose.model('user', UserSchema);
 const vacation = module.exports = mongoose.model('Vacation', VacationSchema);
+const user = module.exports = mongoose.model('user', UserSchema);
 
 /////////////User Model Functions
 
@@ -84,15 +84,14 @@ module.exports.getUserByUsername = function(username, callback){
 }
 
 module.exports.addUser = function(newUser, callback){
-  console.log("from model...", newUser)
+  //console.log("from model...", newUser)
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if(err) {
         throw err;
       }
       newUser.password = hash;
-      newUser.save(function (err) {if (err) console.log ('Error on save!')});
-      //newUser.save(callback);
+      newUser.save(callback);
     });
   });
 }
