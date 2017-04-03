@@ -1,7 +1,7 @@
 <h3 *ngIf="isLoading"><i>Loading vacations ... </i></h3>
 
 <nav>
-  <button (click)="getVacations()" class="btn btn-primary">Refresh</button>
+  <button (click)="getVacations()" class="btn btn-secondary">Refresh</button>
   <button (click)="createVacation()" class="btn btn-primary">Create</button>
 </nav>
 <h3 *ngIf="!isLoading">Select a vacation:</h3>
