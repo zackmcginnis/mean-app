@@ -1116,7 +1116,7 @@ var environment = {
 /***/ 678:
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "#all {\r\n\r\n}"
 
 /***/ }),
 
@@ -1130,7 +1130,7 @@ module.exports = ""
 /***/ 680:
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "#all{\r\n\tfont-family: \"source_sans_pro\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\r\n}\r\n\r\n#lead {\r\n\tbackground-color: #e7e7e7;\t\r\n}\r\n\r\n#cols {\r\n\ttext-align: center;\r\n}\r\n\r\n.row #left{\r\n\tcolor: white;\r\n\tbackground-color: #337ab7;\r\n}\r\n\r\n.row #mid{\r\n\tbackground-color: #e7e7e7;\r\n}\r\n\r\n.row #right{\r\n\tcolor: white;\r\n\tbackground-color: #337ab7;\r\n}"
 
 /***/ }),
 
@@ -1144,7 +1144,7 @@ module.exports = ""
 /***/ 682:
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "#mainbar {\r\n    font-family: \"source_sans_pro\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\t\r\n    background-color: #337ab7;\r\n    border-color: #2e6da4;\r\n}\r\n\r\n#navbar a:active{\r\n\tcolor: ;\r\n\tbackground-color: # ;\r\n}\r\n\r\n#navbar a:hover{\r\n\tbackground-color: # ;\r\n}\r\n\r\n#navbar .active{\r\n\tcolor: ;\r\n\tbackground-color: #;\r\n}\r\n\r\n\r\n.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{\r\n\tbackground-color: # ;\r\n\t}\r\n\r\n#hamburger{\r\n\tcolor: white;\r\n    background-color: white;\r\n    border-color: white;\r\n}\r\n\r\n#login{\r\n\tcolor: white;\r\n}\r\n\r\n#register{\r\n\tcolor: white;\r\n}\r\n\r\n#home{\r\n\tcolor: white;\r\n}\r\n\r\n#profile{\r\n\r\n}\r\n\r\n#vacations{\r\n\r\n}\r\n\r\n#brand{\r\n\tcolor: white;\r\n}"
 
 /***/ }),
 
@@ -1186,21 +1186,21 @@ module.exports = "#delete {\r\n\tfloat: right;\r\n}"
 /***/ 688:
 /***/ (function(module, exports) {
 
-module.exports = "<app-navbar></app-navbar>\n<div class=\"container\">\n  <flash-messages></flash-messages>\n  <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<div id=\"all\">\n\t<app-navbar></app-navbar>\n\t<div class=\"container\" id=\"main\">\n\t  <flash-messages></flash-messages>\n\t  <router-outlet></router-outlet>\n\t</div>\n</div>"
 
 /***/ }),
 
 /***/ 689:
 /***/ (function(module, exports) {
 
-module.exports = "<h2 class=\"page-header\">Dashboard</h2>\n<p>Welcome to your dashboard</p>\n"
+module.exports = "<h2 class=\"page-header\">Dashboard</h2>\n<p>Under construction</p>\n"
 
 /***/ }),
 
 /***/ 690:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron text-center\">\n  <h1>Group Vacation/Airbnb Calculator</h1>\n  <p class=\"lead\">Welcome to our custom vacation calculator. This service specializes provides a cost breakdown to each guest on the vacation proportional to the days they will attend the vacation. </p>\n  <div>\n    <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a> <a class=\"btn btn-default\" [routerLink]=\"['/login']\">Login</a>\n  </div>\n</div>\n\n<div class=\"row\">\n  <div class=\"col-md-4\">\n    <h3>End conflicts among guests!</h3>\n    <p>Eliminate the challenges of determining who owes what amount when traveling on a multi-day, multi-guest vacation</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Send them a cost breakdown!</h3>\n    <p>Our printable pdf service can also be sent to your guest's email addresses, showing exactly who owes what and why</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Connect with Airbnb/Venmo </h3>\n    <p>To be added in the future</p>\n  </div>\n</div>\n"
+module.exports = "<div id=\"all\">\n  <div class=\"jumbotron text-center\" id=\"lead\">\n    <h1>Group Vacation Calculator</h1>\n    <p class=\"leadtext\">Welcome to our custom vacation calculator. This service provides a cost breakdown to each guest on the vacation proportional to the days they will attend the vacation. </p>\n    <div>\n      <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a> <a class=\"btn btn-default\" [routerLink]=\"['/login']\">Login</a>\n    </div>\n  </div>\n\n  <div class=\"row\" id=\"cols\">\n    <div class=\"col-md-4\" id=\"left\">\n      <h3>End conflicts among guests</h3>\n      <p>Eliminate the challenges of determining who owes what amount when traveling on a multi-day, multi-guest vacation</p>\n    </div>\n    <div class=\"col-md-4\" id=\"mid\">\n      <h3>Send them a cost breakdown</h3>\n      <p>Our printable pdf service can also be sent to your guest's email addresses, showing exactly who owes what and why</p>\n    </div>\n    <div class=\"col-md-4\" id=\"right\">\n      <h3>Connect with Airbnb/Venmo </h3>\n      <p>To be added in the future</p>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -1214,14 +1214,14 @@ module.exports = "<h2 class=\"page-header\">Login</h2>\n<form (submit)=\"onLogin
 /***/ 692:
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-default\">\n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\">Vacation/Airbnb Group Calculator</a>\n        </div>\n\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n          <ul class=\"nav navbar-nav navbar-left\">\n            <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/']\">Home</a></li>\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/profile']\">Profile</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/vacations']\">Vacations</a></li>\n\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Login</a></li>\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Register</a></li>\n            <li *ngIf=\"authService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n            <li class=\"dropdown\">\n              <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">HEADING4<span class=\"caret\"></span></a>\n\n              <ul class=\"dropdown-menu\" role=\"menu\">\n                <li><a href=\"#bmiform\">SomeThing</a></li>\n                <li><a href=\"#\">SomeThingElse</a></li>\n                <li><a href=\"#\">SomeThingElse</a></li>\n                <li class=\"divider\"></li>\n                <li><a href=\"#\">SomeThingElse</a></li>\n                <li class=\"divider\"></li>\n                <li><a href=\"#\">SomeThingElse</a></li>\n              </ul>\n\n            </li>\n          </ul>\n        </div><!--/.nav-collapse -->\n\n      </div>\n    </nav>\n"
+module.exports = "<nav class=\"navbar navbar-default\" id=\"mainbar\">\n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" id=\"hamburger\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" id=\"brand\" href=\"#\">Vacation Calculator</a>\n        </div>\n\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n        <!--\n          <ul class=\"nav navbar-nav navbar-left\">\n            <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a id=\"home\" [routerLink]=\"['/']\">Home</a></li>\n          </ul>\n        -->\n\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a id=\"dash\" [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a id=\"profile\" [routerLink]=\"['/profile']\">Profile</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a id=\"vacations\" [routerLink]=\"['/vacations']\">Vacations</a></li>\n\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a id=\"login\" [routerLink]=\"['/login']\">Login</a></li>\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a id=\"register\" [routerLink]=\"['/register']\">Register</a></li>\n            <li *ngIf=\"authService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n            <!--\n            <li class=\"dropdown\">\n            <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\n            <ul class=\"dropdown-menu\">\n            <li><a href=\"#\">FAQ 1</a></li>\n            <li><a href=\"#\">FAQ 2</a></li>\n            <li><a href=\"#\">FAQ 3</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            </ul>\n            </li>\n            -->          \n          </ul>\n        </div><!--/.nav-collapse -->\n\n      </div>\n    </nav>\n"
 
 /***/ }),
 
 /***/ 693:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"user\">\n  <h2 class=\"page-header\">{{user.name}}</h2>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">Username: {{user.username}}</li>\n    <li class=\"list-group-item\">Email: {{user.email}}</li>\n  </ul>\n</div>\n"
+module.exports = "<div *ngIf=\"user\">\n  <h2 class=\"page-header\">{{user.name}}</h2>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">Username: {{user.username}}</li>\n    <li class=\"list-group-item\">Email: {{user.email}}</li>\n  </ul>\n\n  <p>Under construction </p>\n</div>\n"
 
 /***/ }),
 

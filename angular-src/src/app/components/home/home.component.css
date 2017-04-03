@@ -1,0 +1,25 @@
+#all{
+	font-family: "source_sans_pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#lead {
+	background-color: #e7e7e7;	
+}
+
+#cols {
+	text-align: center;
+}
+
+.row #left{
+	color: white;
+	background-color: #337ab7;
+}
+
+.row #mid{
+	background-color: #e7e7e7;
+}
+
+.row #right{
+	color: white;
+	background-color: #337ab7;
+}
