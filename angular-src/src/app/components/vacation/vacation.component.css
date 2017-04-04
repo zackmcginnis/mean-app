@@ -6,3 +6,8 @@
 	border-bottom: dashed;
 	border-width: 1px;
 }
+
+#result{
+	text-align: center;
+	background-color: #e7e7e7;
+}
