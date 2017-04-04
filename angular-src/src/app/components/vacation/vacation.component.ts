@@ -1,11 +1,15 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef, OnInit, Input, OnChanges, ApplicationRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
+import {VacationUpdateService} from '../../services/vacation-update.service';
+import {ResultComponent} from '../result/result.component';
+import {VacationListComponent} from '../vacation-list/vacation-list.component';
+
 import {Guest, Vacation} from '../../helpers/classes';
 
 @Component({
   selector: 'app-vacation',
-  providers: [AuthService],
+  providers: [AuthService, VacationUpdateService],
   templateUrl: './vacation.component.html',
   styleUrls: ['./vacation.component.css']
 })
@@ -17,7 +21,12 @@ export class VacationComponent implements OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private updateService: VacationUpdateService,
+    private cdr:ChangeDetectorRef,
+    public zone: NgZone,
+    public ApplicationRef: ApplicationRef,
+    public vlist: VacationListComponent) {
     this.createForm();
   }
 
@@ -33,8 +42,9 @@ export class VacationComponent implements OnChanges {
     this.vacationForm.reset({
       name: this.vacation.name,
       price: this.vacation.price,
-      totalDays: this.vacation.totalDays,
+      totalDays: this.vacation.totalDays
     });
+   //this.cdr.detectChanges();
     this.setGuests(this.vacation.guests);
   }
 
@@ -69,6 +79,7 @@ export class VacationComponent implements OnChanges {
 
   //submitting changes/edits to old vacation
   onSubmit() {
+    this.vacation = this.prepareSaveVacation();
     //calculate total days by all guests in vacation
     //assign to this.vacation
     var days: number = 0;
@@ -76,21 +87,19 @@ export class VacationComponent implements OnChanges {
       days += this.vacation.guests[i].guestDays;
     }
     this.vacation.totalDays = days;  
-    this.vacation = this.prepareSaveVacation();
+    this.vacation.guests = this.calculateTotal(this.vacation, this.vacation.guests);
 
     if (this.vacation.newFlag) {
       //this.vacation.guests = this.calculateTotal(this.vacation, this.vacation.guests);
       this.authService.addVacation(this.vacation);
-      console.log("creating new vacation")
     } else {
       this.authService.updateVacation(this.vacation);
-      console.log("updating existing vacation")
-      console.log(this.vacation)
     }
+    //this.ApplicationRef.tick(); 
+    //this.refreshVacation(this.vacation);
     this.ngOnChanges();
 
   }
-
 
   prepareSaveVacation(): Vacation {
     const formModel = this.vacationForm.value;
@@ -109,7 +118,6 @@ export class VacationComponent implements OnChanges {
       newFlag: this.vacation.newFlag
     };
     saveVacation._id = this.vacation._id;
-    saveVacation.guests = this.calculateTotal(saveVacation, saveVacation.guests);
     return saveVacation;
   }
 
@@ -133,9 +141,6 @@ export class VacationComponent implements OnChanges {
     let costPerDay: number;
     let guestTotal: number;
 
-    console.log("check", price)
-        console.log("check", vacationDays)
-
     costPerDay = price / vacationDays;
 
     for (let gg of allGuests){
@@ -143,7 +148,16 @@ export class VacationComponent implements OnChanges {
 
       gg.amountOwed = gg.guestDays * costPerDay;
     }
-    console.log("guests after calc...", guests)
     return guests;
   }
+
+  // refreshVacation(oldVac){
+  //   this.authService.getVacations()
+  //     .subscribe(
+  //       vacations => {
+  //         this.vacations = vacations;
+  //     })
+  // }
+
+
 }

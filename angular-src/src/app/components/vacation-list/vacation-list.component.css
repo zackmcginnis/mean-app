@@ -1,3 +1,32 @@
 #rightside {
-	float: top;
+	text-align: center;
+	margin-right: ;
+}
+
+#list{
+	text-align: center;
+	background-color: ;
+}
+
+#result{
+	text-align: center;
+	background-color: #e7e7e7;
+
+}
+
+.row{
+	text-align: ;
+}
+
+.list-group-item {
+	margin: 1px;
+	text-align: center;
+}
+
+.list-group-item :active{
+display:block;
+}
+
+#atag{
+	display:block;
 }

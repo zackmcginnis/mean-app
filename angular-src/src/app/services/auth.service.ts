@@ -16,7 +16,7 @@ export class AuthService {
   isDep: boolean;
 
   constructor(private http:Http) { 
-    this.isDep = true;  //change to false if developing locally
+    this.isDep = false;  //change to false if developing locally
   }
 
   registerUser(user){
@@ -61,6 +61,14 @@ export class AuthService {
 
   loggedIn(){
     return tokenNotExpired();
+  }
+
+  hasData(guests){
+    if (guests == undefined){
+    return false;
+    } else {
+      return true;
+    }
   }
 
   logout(){
@@ -176,6 +184,6 @@ export class AuthService {
       //return 'http://localhost:8080/'+ep;
       return 'http://localhost:3000/'+ep;
     }
-  }  
+  }
 
 }

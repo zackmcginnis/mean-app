@@ -1,0 +1,18 @@
+#main{
+
+}
+
+#guesttemp{
+	border-bottom: dashed;
+	border-width: 1px;	
+}
+
+#pdf{
+	border: none;
+	margin: 10px;
+}
+
+#bottomborder{
+	border-bottom: dashed;
+	border-width: 1px;	
+}

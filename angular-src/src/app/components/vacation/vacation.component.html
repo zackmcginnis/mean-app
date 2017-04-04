@@ -1,55 +1,66 @@
-<form [formGroup]="vacationForm" (ngSubmit)="onSubmit()" novalidate>
-  <div style="margin-bottom: 1em">
-    <button type="submit"
-            [disabled]="vacationForm.pristine" class="btn btn-success">Submit</button> &nbsp;
-    <button type="reset" (click)="revert()"
-            [disabled]="vacationForm.pristine" class="btn btn-warning">Revert</button>
-    <button type="delete" (click)="delete()"
-             class="btn btn-danger">Delete Vacation</button>
-  </div>
-  <!-- Vacation Detail Controls -->
-  <div class="form-group" id="nameandprice">
-      <label>Name of vacation:
-        <input class="form-control" formControlName="name" required>
-      </label>
-      <br><br>
-      <label>Price of vacation:
-        <input class="form-control" formControlName="price" required>
-      </label>
-  </div>
-
-  <div formArrayName="guests" class="well well-lg">
-    <div *ngFor="let guest of guests.controls; let i=index" [formGroupName]="i" >
-      <!-- The repeated guest template -->
-      <h4>Guest #{{i + 1}}</h4>
-      <div id="output">
-            <!-- output of math-->
-      </div>
-        <div class="form-group">
-          <button id="delete" (click)="deleteGuest(i)" class="btn btn-danger">Delete</button>
-            <label>Name:
-              <input class="form-control" formControlName="guestName" required>
+<div class="row">  
+  <div class="col-sm-6" id="detail">
+    <h2>Vacation Detail</h2>
+    <h3>Editing: {{vacation.name}}</h3>
+      <form [formGroup]="vacationForm" (ngSubmit)="onSubmit()" novalidate>
+        <div style="margin-bottom: 1em">
+          <button type="submit"
+                  [disabled]="vacationForm.pristine" class="btn btn-success">Submit</button>
+          <button type="reset" (click)="revert()"
+                  [disabled]="vacationForm.pristine" class="btn btn-warning">Revert</button>
+          <button type="delete" (click)="delete()"
+                   class="btn btn-danger">Delete Vacation</button>
+        </div>
+        <!-- Vacation Detail Controls -->
+        <div class="form-group" id="nameandprice">
+            <label>Name of vacation:
+              <input class="form-control" formControlName="name" required>
             </label>
             <br><br>
-            <label>Total days:
-              <input class="form-control" type="number" formControlName="guestDays" required>
-            </label>
-            <br><br>
-            <label>Email Address:
-              <input class="form-control" formControlName="guestEmail" required>
+            <label>Price of vacation:
+              <input class="form-control" formControlName="price" required>
             </label>
         </div>
-      </div>
 
-      <br>
-      <!-- End of the repeated address template -->
-   
-    <button (click)="addGuest()" type="button">Add a guest</button>
+        <div formArrayName="guests" class="well well-lg">
+          <div *ngFor="let guest of guests.controls; let i=index" [formGroupName]="i" >
+            <!-- The repeated guest template -->
+            <h4>Guest #{{i + 1}}</h4>
+            <div id="output">
+                  <!-- output of math-->
+            </div>
+              <div class="form-group" id="eachguest">
+                <button id="delete" (click)="deleteGuest(i)" class="btn btn-danger">Delete Guest</button>
+                  <label>Name:
+                    <input class="form-control" formControlName="guestName" required>
+                  </label>
+                  <br><br>
+                  <label>Total days:
+                    <input class="form-control" type="number" formControlName="guestDays" required>
+                  </label>
+                  <br><br>
+                  <label>Email Address:
+                    <input class="form-control" formControlName="guestEmail" required>
+                  </label>
+              </div>
+            </div>
+
+            <br>
+            <!-- End of the repeated address template -->
+         
+          <button (click)="addGuest()" type="button">Add another guest</button>
+          <button type="submit"
+                  [disabled]="vacationForm.pristine" class="btn btn-success">Submit</button>
+        </div>
+      </form>
   </div>
-</form>
 
-<!--
-<p>vacationForm value: {{ vacationForm.value | json}}</p>
-<h4>Name change log</h4>
-<div *ngFor="let name of nameChangeLog">{{name}}</div>
--->
+  <div class="col-sm-6" id="result" *ngIf="vacation && (!vacation.isNew)">
+    <app-result [vacation]="vacation" [guests]="vacation.guests"></app-result>
+  </div>
+</div>
+  <!--
+  <p>vacationForm value: {{ vacationForm.value | json}}</p>
+  <h4>Name change log</h4>
+  <div *ngFor="let name of nameChangeLog">{{name}}</div>
+  -->

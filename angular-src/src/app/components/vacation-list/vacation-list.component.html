@@ -4,25 +4,19 @@
   <button (click)="getVacations()" class="btn btn-secondary">Refresh</button>
   <button (click)="createVacation()" class="btn btn-primary">Create</button>
 </nav>
-<h3 *ngIf="!isLoading">Select a vacation:</h3>
 
 <div class="row">
-	<div class="col-sm-4">
+	<div class="col-sm-4" id="list">
+	<h2 *ngIf="!isLoading">Select a vacation:</h2>
 		<div class="list-group">
-		  <a *ngFor="let vacation of vacations" (click)="select(vacation)">
+		  <a *ngFor="let vacation of vacations" (click)="select(vacation)" id="atag">
 			<div class="list-group-item active">
 			{{vacation.name}}
 			</div>		
 		  </a>
 		</div> 
 	</div>
-	<div class="col-sm-4" id="rightside" *ngIf="selectedVacation">
-	  <h2>Vacation Detail</h2>
-	  <h3>Editing: {{selectedVacation.name}}</h3>
+	<div class="col-sm-8" id="rightside" *ngIf="selectedVacation">
 	  <app-vacation [vacation]="selectedVacation"></app-vacation>
-	</div>
-	<div class="col-sm-4" id="result" *ngIf="selectedVacation">
-	  <h2>Pricing Breakdown</h2>
-	  <app-result [vacation]="selectedVacation"></app-result>
 	</div>
 </div>

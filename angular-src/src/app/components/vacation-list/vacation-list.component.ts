@@ -3,12 +3,13 @@ import { Observable }        from 'rxjs/Observable';
 import {Router} from '@angular/router';
 import 'rxjs/add/operator/finally';
 import {AuthService} from '../../services/auth.service';
+import {VacationUpdateService} from '../../services/vacation-update.service';
 import {Guest, Vacation} from '../../helpers/classes';
 import {VacationPipe} from '../../helpers/pipes';
 
 @Component({
   selector: 'app-vacation-list',
-  providers: [AuthService],
+  providers: [AuthService, VacationUpdateService],
   templateUrl: './vacation-list.component.html',
   styleUrls: ['./vacation-list.component.css']
 })

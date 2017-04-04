@@ -1,24 +1,33 @@
-
-<div *ngFor="let guest of guests; let i=index" [attr.data-index]="i">
-  <!-- The repeated guest template -->
-  <h4>Guest #{{i + 1}}</h4>
-  <div id="output">
-  		<label>Name: {{guest.guestName}}
-
-        </label>
-        <br><br>
-        <label>Amount owed: {{guest.amountOwed}}
-
-        </label>
-        <!-- output of math-->
+<div id="main" *ngIf="!vacation.newFlag">
+  <div id="bottomborder">
+          <h2>Pricing Breakdown</h2>
   </div>
-</div>
+  <div id="hasdata">
+    <div *ngFor="let guest of guests; let i=index" [attr.data-index]="i" id="guesttemp">
+      <!-- The repeated guest template -->
+      <h4>Guest #{{i + 1}}</h4>
+      <div id="output">
+      		<label>Name: {{guest.guestName}}
 
-<div id="pdf">
-  <button type="button" class="btn btn-default" (click)="download()">
-    <span class="glyphicon glyphicon-print"></span> Download PDF
-  </button>
-  <button type="button" class="btn btn-default" (click)="sendAll()">
-    <span class="glyphicon glyphicon-envelope"></span> Email PDF to guests
-  </button>
+            </label>
+           <br><br>
+            <label>Vacation Price: {{vacation.price}}
+
+            </label>
+            <br><br>
+            <label>Amount owed: {{guest.amountOwed}}
+
+            </label>
+            <!-- output of math-->
+      </div>
+    </div>
+
+  <div id="pdf">
+    <button type="button" class="btn btn-default" (click)="download()">
+      <span class="glyphicon glyphicon-print"></span> Download PDF
+    </button>
+    <button type="button" class="btn btn-default" (click)="sendAll()">
+      <span class="glyphicon glyphicon-envelope"></span> Email PDF to guests
+    </button>
+  </div>
 </div>
