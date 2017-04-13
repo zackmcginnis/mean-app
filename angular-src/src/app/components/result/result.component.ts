@@ -5,6 +5,7 @@ import {PdfService} from '../../services/pdf.service';
 import {VacationUpdateService} from '../../services/vacation-update.service';
 import {Guest, Vacation} from '../../helpers/classes';
 import { Subscription }   from 'rxjs/Subscription';
+import * as jspdf from 'jspdf';
 
 @Component({
   selector: 'app-result',
@@ -35,6 +36,50 @@ export class ResultComponent implements OnChanges, OnInit {
     	//must first generate pdf of result data
     downloadPdf(){
 
+    let doc = new jspdf();
+    doc.text(10, 10, 'PRICE BREAKDOWN OF YOUR VACATION');
+    doc.text(10, 20, '---------------------------------------------------');
+    var height: number = 20;
+    var count: number = 0;
+    var page: number = 1;
+    	for(let g of this.guests){
+    		let name = "Name: " +g.guestName;
+    		let price = "Vacation Price: $" +(Math.round(100*this.vacation.price)/100).toString();
+ 			let totaldays = "Total Days Booked By All (cumulative): "+this.vacation.totalDays.toString();
+ 			let perday = "Price Per Vacation Day: $" +(Math.round(100*(this.vacation.price / this.vacation.totalDays))/100).toString();
+ 			let gdays = "Days Booked By This Guest: " +g.guestDays.toString();
+ 			let amount = "Amount Owed By This Guest: $" +(Math.round(100*(g.amountOwed))/100).toString();
+
+ 				if (count != 0 && count % 3 == 0){
+ 					doc.addPage();
+ 					page++;
+ 					height = 20;
+ 					var pagestring = 'PRICE BREAKDOWN OF YOUR VACATION - Page '+page.toString();
+ 					doc.text(10, 10, pagestring);
+    				doc.text(10, 20, '---------------------------------------------------');
+ 				} 
+
+    			height += 10;
+
+    		    doc.text(20, height, name);
+    		    height += 10;
+    			doc.text(20, height, price);
+    		    height += 10;
+    			doc.text(20, height, totaldays);
+    		    height += 10;
+    			doc.text(20, height, perday);
+    		    height += 10;
+    			doc.text(20, height, gdays);
+    			height += 10;
+    			doc.text(20, height, amount);
+    			height += 10;
+    			doc.text(20, height, '---------------------------------------------------');
+
+    			count++;
+    	}
+
+    doc.save('vacation-price-breakdown.pdf');
+
     }
 
     //generate pdf of result data
@@ -44,4 +89,6 @@ export class ResultComponent implements OnChanges, OnInit {
     sendPdf(){
 
     }
+
+
 }

@@ -16,3 +16,15 @@
 	border-bottom: dashed;
 	border-width: 1px;	
 }
+
+#output {
+		text-align: right;
+}
+
+label {
+	font-size: large;
+}
+
+h4 {
+	font-size: large;	
+}

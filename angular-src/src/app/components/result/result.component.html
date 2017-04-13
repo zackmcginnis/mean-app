@@ -11,11 +11,23 @@
 
             </label>
            <br><br>
-            <label>Vacation Price: {{vacation.price}}
+            <label>Vacation Price: ${{vacation.price | number : '1.2-2'}}
 
             </label>
             <br><br>
-            <label>Amount owed: {{guest.amountOwed}}
+            <label>Total days booked by all guests: {{vacation.totalDays}}
+
+            </label>
+            <br><br>
+            <label>Price per vacation day: ${{(vacation.price / vacation.totalDays) | number : '1.2-2'}}
+
+            </label>            
+           <br><br>
+            <label>Days booked by this guest: {{guest.guestDays}}
+
+            </label>
+            <br><br>
+            <label>Amount owed by this guest: ${{guest.amountOwed | number : '1.2-2'}}
 
             </label>
             <!-- output of math-->
@@ -23,7 +35,7 @@
     </div>
 
   <div id="pdf">
-    <button type="button" class="btn btn-default" (click)="download()">
+    <button type="button" class="btn btn-default" (click)="downloadPdf()">
       <span class="glyphicon glyphicon-print"></span> Download PDF
     </button>
     <button type="button" class="btn btn-default" (click)="sendAll()">
