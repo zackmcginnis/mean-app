@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {PdfService} from '../../services/pdf.service';
 import {VacationUpdateService} from '../../services/vacation-update.service';
-import {Guest, Vacation} from '../../helpers/classes';
+import {Guest, Vacation, EmailObject} from '../../helpers/classes';
 import { Subscription }   from 'rxjs/Subscription';
 import * as jspdf from 'jspdf';
 
@@ -19,12 +19,20 @@ export class ResultComponent implements OnChanges, OnInit {
 	@Input() guests: Guest[];
   	vacationForm: FormGroup;
   	subscription: Subscription;
+  	send: boolean = false;
+  	user: Object;
 
   	constructor(private pdfService: PdfService, private authService: AuthService, private updateService: VacationUpdateService) 
   	{}
   
   	ngOnInit(){
-
+    this.authService.getProfile().subscribe(profile => {
+      this.user = profile.user;
+    },
+    err => {
+      console.log(err);
+      return false;
+    });
   	}
 
     ngOnChanges(changes) {
@@ -78,16 +86,41 @@ export class ResultComponent implements OnChanges, OnInit {
     			count++;
     	}
 
-    doc.save('vacation-price-breakdown.pdf');
+    	if(this.send == true) {
+    		return doc;
+    	} else {
+    	doc.save('vacation-price-breakdown.pdf');
+    }
 
     }
+
+
 
     //generate pdf of result data
       //collect email addresses for each guest, place in array
     	//connect service to send email (mailchimp?)
     		//create template for email (hello, your friend xxxxxx has sent you a price breakdown for your upcoming vacation)
-    sendPdf(){
+    sendAll(){
+    	this.send = true;
+    	let guestEmails = [];
 
+    	//generate pdf
+    	let file = this.downloadPdf();
+    	console.log(this.user);
+
+    	//gather emails of guests
+    		for(let g of this.guests){
+    			guestEmails.push(g.guestEmail);
+    		}
+
+    		let emailObject = new EmailObject;
+    		emailObject.pdfDoc = file.output('datauristring');;
+    		emailObject.emailList = guestEmails;
+
+    		this.authService.sendPdf(emailObject);
+    		console.log(emailObject);
+    	//
+    	this.send = false;
     }
 
 

@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const Vacation = require('../models/vacation');
 const User = require('../models/user');
+const http = require('http');
+const nodemailer = require('nodemailer')
 
 /////////////User routes
 
@@ -174,5 +176,53 @@ router.get('/guests', passport.authenticate('jwt', {session:false}), (req, res, 
 router.delete('/vacations/:name/guests', passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
 });
+
+
+//email
+router.post('/email', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  let list = req.body.emailList;
+  let pdf = req.body.pdfDoc;
+  let messageArray = [];
+
+
+  let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'vacation.calculator.donotreply@gmail.com',
+      pass: 'tempPass123'
+    }
+  });
+
+    var message = {
+      transport: transporter,
+      from: req.user.email,
+      subject: 'Pricing breakdown for upcoming vacation',
+      text: 'Attached is the pricing breakdown for you upcoming vacation',
+      html: '<p>Attached is the pricing breakdown for you upcoming vacation</p>',
+      attachments: [{
+        filename: 'vacation-price-breakdown.pdf', 
+        path: pdf
+      }]
+  }
+
+    //messageArray.push(message);
+  
+
+  // send mail with defined transport object
+  list.forEach(function (to, i) {
+    message.to = to;
+    message.transport.sendMail(message, function(error, info){
+        if(error){
+            console.log(error);
+        }else{
+            console.log('Message sent: ' + info.response);
+            if (i === list.length - 1){
+              message.transport.close();
+            }
+        }
+    });    
+  })
+})
+
 
 module.exports = router;

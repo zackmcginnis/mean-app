@@ -177,6 +177,22 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  sendPdf(file){
+    let headers = new Headers();
+    this.loadToken();
+    let ep = this.prepEndpoint('users/email');
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type','application/json');
+    return this.http.post(ep, file, {headers: headers})
+      .map(res => res.json())
+      .subscribe(
+        data => console.log(data),
+        err => console.log(err),
+        () => console.log('yay')
+      );
+      ;
+  }
+
   prepEndpoint(ep){
     if(this.isDep){
       return ep;

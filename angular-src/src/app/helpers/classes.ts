@@ -13,3 +13,8 @@ export class Guest {
   amountOwed : number = 0;
   guestEmail = 'Enter guest email';
 }
+
+export class EmailObject {
+  pdfDoc : Object;
+  emailList : Array<String>;
+}
