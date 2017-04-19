@@ -86,8 +86,8 @@ app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
  
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/facebookerror' }), function(req, res){
 
-  res.redirect('http://localhost:4200/facebook/'+token); //change for production
-  //res.redirect('/facebook/'+token); //change for production
+  //res.redirect('http://localhost:4200/facebook/'+token); //change for production
+  res.redirect('/facebook/'+token); //change for production
 
 });
 
