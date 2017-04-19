@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const {SECRET} = require('../config/config');
+const {SECRET, GMAILUSER, GMAILPASS} = require('../config/config');
 const Vacation = require('../models/vacation');
 const User = require('../models/user');
 const http = require('http');
