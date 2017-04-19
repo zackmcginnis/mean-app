@@ -9,6 +9,8 @@ process.title = PROCESS_TITLE;
 
 const express = require('express');
 const app = express();
+const fs = require('fs');
+const https = require('https');
 const path = require('path');
 const morgan = require('morgan'); // Import Morgan Package
 const bodyParser = require('body-parser');
@@ -19,6 +21,11 @@ const session = require('express-session');
 const social = require('./config/passport')(app, passport);
 const router = express.Router(); // Invoke the Express Router
 const routes = require('./routes/users')(router);
+
+// const options = {
+//    key  : fs.readFileSync('server.key'),
+//    cert : fs.readFileSync('server.crt')
+// };
 
 app.use(cors());
 app.use(morgan('dev')); // Morgan Middleware

@@ -1,7 +1,6 @@
-# MEANauthapp
+# Group Vacation Calculator
 
-Complete MEAN stack application with authentication using json web tokens
-(This project is based on a template create by Brad Traversy)
+Complete MEAN stack web application with authentication using json web tokens and Facebook login.
 
 ### Version
 1.0.0
