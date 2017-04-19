@@ -215,14 +215,14 @@ router.post('/email', (req, res, next) => {
   let transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: config.GMAILUSER,
-      pass: config.GMAILPASS
+      user: GMAILUSER,
+      pass: GMAILPASS
     }
   });
 
     var message = {
       transport: transporter,
-      from: req.user.email,
+      from: req.decoded._doc.email,
       subject: 'Pricing breakdown for upcoming vacation',
       text: 'Attached is the pricing breakdown for you upcoming vacation',
       html: '<p>Attached is the pricing breakdown for you upcoming vacation</p>',
