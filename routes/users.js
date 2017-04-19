@@ -1,12 +1,11 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const config = require('../config/config');
+const {SECRET} = require('../config/config');
 const Vacation = require('../models/vacation');
 const User = require('../models/user');
 const http = require('http');
 const nodemailer = require('nodemailer')
-const secret = config.SECRET;
 
 /////////////User routes
 module.exports = function(router) {
@@ -47,7 +46,7 @@ router.post('/authenticate', (req, res, next) => {
     User.comparePassword(password, user.password, (err, isMatch) => {
       if(err) throw err;
       if(isMatch){
-        const token = jwt.sign(user, secret, {
+        const token = jwt.sign(user, SECRET, {
           expiresIn: 604800 // 1 week
         });
 
@@ -77,7 +76,7 @@ router.use(function(req, res, next) {
     // Check if token is valid and not expired  
     if (token) {
         // Function to verify token
-        jwt.verify(token, secret, function(err, decoded) {
+        jwt.verify(token, SECRET, function(err, decoded) {
             if (err) {
               console.log("token error")
                 res.json({ success: false, message: 'Token invalid' }); // Token has expired or is invalid

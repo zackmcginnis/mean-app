@@ -1,9 +1,9 @@
 'use strict'
 
 require('dotenv').config();
-const config = require('./config/config');
+const {PORT, MONGO_DB_HOST, PROCESS_TITLE} = require('./config/config');
 //const ENV = config.ENV || 'prod';
-process.title = config.PROCESS_TITLE;
+process.title = PROCESS_TITLE;
 // //require('./helpers/unhandled-exceptions.logger')
 // require('./helpers/prototype-extensions')
 
@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect To Database
 //config.MONGO_DB_HOST_DEPLOY
-mongoose.connect(config.MONGO_DB_HOST, function (err) {
+mongoose.connect(MONGO_DB_HOST, function (err) {
 	if (err) {
         console.log('Not connected to the database: ' + err); // Log to console if unable to connect to database
     } else {
@@ -42,7 +42,7 @@ mongoose.connect(config.MONGO_DB_HOST, function (err) {
 
 // On Connection
 mongoose.connection.on('connected', () => {
-  console.log('Connected to database '+config.MONGO_DB_HOST);//config.MONGO_DB_HOST_DEPLOY
+  console.log('Connected to database '+MONGO_DB_HOST);//config.MONGO_DB_HOST_DEPLOY
 });
 
 // On Error
@@ -56,7 +56,7 @@ mongoose.connection.on('error', (err) => {
 //const port = 3000;
 //const port = process.env.PORT || 8080; //for deploy
 
-const port = config.PORT;//3000;
+const port = PORT;//3000;
 //const port = process.env.PORT || 8080; //for deploy
 
 
