@@ -1,22 +1,25 @@
 const express = require('express');
-const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const config = require('../config/database');
+const config = require('../config/config');
 const Vacation = require('../models/vacation');
 const User = require('../models/user');
 const http = require('http');
 const nodemailer = require('nodemailer')
+const secret = config.SECRET;
 
 /////////////User routes
+module.exports = function(router) {
 
 // Register
 router.post('/register', (req, res, next) => {
+  //regToken = jwt.sign({ username: req.body.username, email: req.body.email }, config.secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
   let newUser = new User({
     name: req.body.name,
     email: req.body.email,
     username: req.body.username,
     password: req.body.password
+    //temporarytoken: regToken
   });
   //perform validation here as well
 
@@ -44,13 +47,13 @@ router.post('/authenticate', (req, res, next) => {
     User.comparePassword(password, user.password, (err, isMatch) => {
       if(err) throw err;
       if(isMatch){
-        const token = jwt.sign(user, config.secret, {
+        const token = jwt.sign(user, secret, {
           expiresIn: 604800 // 1 week
         });
 
         res.json({
           success: true,
-          token: 'JWT '+token,
+          token: token,
           user: {
             id: user._id,
             name: user.name,
@@ -65,15 +68,40 @@ router.post('/authenticate', (req, res, next) => {
   });
 });
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Middleware for Routes that checks for token - Place all routes after this route that require the user to already be logged in
+///////////////////////////////////////////////////////////////////////////////////////////////////
+router.use(function(req, res, next) {
+    var token = req.body.token || req.body.query || req.headers['authorization']; // Check for token in body, URL, or headers
+
+    // Check if token is valid and not expired  
+    if (token) {
+        // Function to verify token
+        jwt.verify(token, secret, function(err, decoded) {
+            if (err) {
+              console.log("token error")
+                res.json({ success: false, message: 'Token invalid' }); // Token has expired or is invalid
+            } else {
+              console.log("token success")
+                req.decoded = decoded; // Assign to req. variable to be able to use it in next() route ('/me' route)
+                next(); // Required to leave middleware
+            }
+        });
+    } else {
+      console.log("no token")
+        res.json({ success: false, message: 'No token provided' }); // Return error if no token was provided in the request
+    }
+});
+
 // Profile
-router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  res.json({user: req.user});
+router.get('/profile', (req, res, next) => {
+  res.json({user: req.decoded._doc});
 });
 
 /////////////Vacation routes
 
 //add vacation
-router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.post('/vacations', (req, res, next) => {
   let newVacation = new Vacation({
     name: req.body.name,
     price: req.body.price,
@@ -83,12 +111,12 @@ router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, r
   });
   console.log("this vacation", newVacation);
 
-  User.getUserByUsername(req.user.username, (err, user) => {
+  User.getUserByUsername(req.decoded._doc.username, (err, user) => {
     if(err) throw err;
     if(!user){
       return res.json({success: false, msg: 'User not found'});
     }
-    User.addVacation(newVacation, user._id, (err, user) => {
+    User.addVacation(newVacation, req.decoded._doc._id, (err, user) => {
       if(err){
         console.log("error ->>", err)
         res.json({success: false, msg:'Failed to add vacation'});
@@ -100,9 +128,9 @@ router.post('/vacations', passport.authenticate('jwt', {session:false}), (req, r
 })
 
 // get vacations
-router.get('/vacations', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  //console.log("get vacations", req.user)
-  let id = req.user._id;
+router.get('/vacations', (req, res, next) => {
+
+  let id = req.decoded._doc._id;
   User.getVacationsById(id, (err, user) => {
     if (err) {
       console.log(err);
@@ -116,7 +144,7 @@ router.get('/vacations', passport.authenticate('jwt', {session:false}), (req, re
 })
 
 //Update Vacation
-router.put('/vacations/edit', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.put('/vacations/edit', (req, res, next) => {
   let updated = new Vacation({
     name: req.body.name,
     price: req.body.price,
@@ -126,7 +154,7 @@ router.put('/vacations/edit', passport.authenticate('jwt', {session:false}), (re
     _id: req.body._id
   });
 
-  User.getUserByUsername(req.user.username, (err, thisuser) => {
+  User.getUserByUsername(req.decoded._doc.username, (err, thisuser) => {
     if(err) throw err;
     if(!thisuser){
       return res.json({success: false, msg: 'User not found'});
@@ -143,8 +171,8 @@ router.put('/vacations/edit', passport.authenticate('jwt', {session:false}), (re
 })
 
 // Delete Vacation
-router.put('/vacations/delete', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  User.getUserByUsername(req.user.username, (err, thisuser) => {
+router.put('/vacations/delete', (req, res, next) => {
+  User.getUserByUsername(req.decoded._doc.username, (err, thisuser) => {
     if(err) throw err;
     if(!thisuser){
       return res.json({success: false, msg: 'User not found'});
@@ -165,21 +193,21 @@ router.put('/vacations/delete', passport.authenticate('jwt', {session:false}), (
 //add Guest
 
 // get Guest
-router.get('/guests', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  res.json({vacations: req.user.vacations});
+router.get('/guests', (req, res, next) => {
+  res.json({vacations: req.decoded._doc.vacations});
 });
 
 //Update Guest
 
 
 // Delete Guest
-router.delete('/vacations/:name/guests', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.delete('/vacations/:name/guests', (req, res, next) => {
 
 });
 
 
 //email
-router.post('/email', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.post('/email', (req, res, next) => {
   let list = req.body.emailList;
   let pdf = req.body.pdfDoc;
   let messageArray = [];
@@ -188,8 +216,8 @@ router.post('/email', passport.authenticate('jwt', {session:false}), (req, res, 
   let transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: 'vacation.calculator.donotreply@gmail.com',
-      pass: 'tempPass123'
+      user: config.GMAILUSER,
+      pass: config.GMAILPASS
     }
   });
 
@@ -225,4 +253,5 @@ router.post('/email', passport.authenticate('jwt', {session:false}), (req, res, 
 })
 
 
-module.exports = router;
+return router;
+};

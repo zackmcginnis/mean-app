@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" id="brand" href="#">Vacation Calculator</a>
+          <a class="navbar-brand" id="brand" [routerLink]="['/']">Vacation Calculator</a>
         </div>
 
         <div id="navbar" class="collapse navbar-collapse">
@@ -18,13 +18,13 @@
         -->
 
           <ul class="nav navbar-nav navbar-right">
-            <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="dash" [routerLink]="['/dashboard']">Dashboard</a></li>
-            <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="profile" [routerLink]="['/profile']">Profile</a></li>
-            <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="vacations" [routerLink]="['/vacations']">Vacations</a></li>
+            <li *ngIf="(authService.loggedIn() || authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="dash" [routerLink]="['/dashboard']">Dashboard</a></li>
+            <li *ngIf="(authService.loggedIn() || authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="profile" [routerLink]="['/profile']">Profile</a></li>
+            <li *ngIf="(authService.loggedIn() || authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="vacations" [routerLink]="['/vacations']">Vacations</a></li>
 
-            <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="login" [routerLink]="['/login']">Login</a></li>
-            <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="register" [routerLink]="['/register']">Register</a></li>
-            <li *ngIf="authService.loggedIn()"><a id="logout" (click)="onLogoutClick()" href="#">Logout</a></li>
+            <li *ngIf="(!authService.loggedIn() && !authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="login" [routerLink]="['/login']">Login</a></li>
+            <li *ngIf="(!authService.loggedIn() && !authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="register" [routerLink]="['/register']">Register</a></li>
+            <li *ngIf="(authService.loggedIn() || authService.loggedInFB())"><a id="logout" (click)="onLogoutClick()" href="#">Logout</a></li>
             <!--
             <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>

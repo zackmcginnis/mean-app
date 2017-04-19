@@ -1,4 +1,4 @@
-import { Component, NgZone, ChangeDetectorRef, OnInit, Input, OnChanges, ApplicationRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, Input, OnChanges, ApplicationRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {VacationUpdateService} from '../../services/vacation-update.service';
@@ -24,7 +24,6 @@ export class VacationComponent implements OnChanges {
     private authService: AuthService,
     private updateService: VacationUpdateService,
     private cdr:ChangeDetectorRef,
-    public zone: NgZone,
     public ApplicationRef: ApplicationRef,
     public vlist: VacationListComponent) {
     this.createForm();

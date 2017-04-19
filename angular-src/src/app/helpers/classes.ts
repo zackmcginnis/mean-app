@@ -1,3 +1,4 @@
+
 export class Vacation {
   name = '';
   price = 0;
@@ -18,3 +19,5 @@ export class EmailObject {
   pdfDoc : Object;
   emailList : Array<String>;
 }
+
+

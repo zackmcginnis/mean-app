@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const config = require('../config/database');
 
 // Guests Schema
 const GuestSchema = mongoose.Schema({

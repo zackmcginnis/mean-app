@@ -1,17 +1,48 @@
+'use strict'
+
+require('dotenv').config();
+const config = require('./config/config');
+//const ENV = config.ENV || 'prod';
+process.title = config.PROCESS_TITLE;
+// //require('./helpers/unhandled-exceptions.logger')
+// require('./helpers/prototype-extensions')
+
 const express = require('express');
+const app = express();
 const path = require('path');
+const morgan = require('morgan'); // Import Morgan Package
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
-const config = require('./config/database');
+const session = require('express-session');
+const social = require('./config/passport')(app, passport);
+const router = express.Router(); // Invoke the Express Router
+const routes = require('./routes/users')(router);
+
+app.use(cors());
+app.use(morgan('dev')); // Morgan Middleware
+// CORS Middleware
+
+// Body Parser Middleware
+app.use(bodyParser.json());
+app.use('/api', routes);
+// Set Static Folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect To Database
-mongoose.connect(config.database);
+//config.MONGO_DB_HOST_DEPLOY
+mongoose.connect(config.MONGO_DB_HOST, function (err) {
+	if (err) {
+        console.log('Not connected to the database: ' + err); // Log to console if unable to connect to database
+    } else {
+        console.log('Successfully connected to MongoDB'); // Log to console if able to connect to database
+    }
+});
 
 // On Connection
 mongoose.connection.on('connected', () => {
-  console.log('Connected to database '+config.database);
+  console.log('Connected to database '+config.MONGO_DB_HOST);//config.MONGO_DB_HOST_DEPLOY
 });
 
 // On Error
@@ -19,30 +50,18 @@ mongoose.connection.on('error', (err) => {
   console.log('Database error: '+err);
 });
 
-const app = express();
-
-const users = require('./routes/users');
 
 // Port Number
-const port = 3000;
+const port = config.PORT;//3000;
 //const port = process.env.PORT || 8080; //for deploy
 
-// CORS Middleware
-app.use(cors());
-
-// Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Body Parser Middleware
-app.use(bodyParser.json());
-
-// Passport Middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
-require('./config/passport')(passport);
-
-app.use('/users', users);
+const getIp = require('ipware')().get_ip;
+app.use(function(req, res, next) {
+    const ipInfo = getIp(req);
+    console.log(ipInfo)
+    //logger.verbose({ipInfo})
+    next()
+})
 
 // Index Route
 app.get('/', (req, res) => {
