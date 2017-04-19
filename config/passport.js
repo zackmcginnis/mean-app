@@ -4,7 +4,7 @@ const FacebookStrategy  = require('passport-facebook').Strategy
 const jwt = require('jsonwebtoken');
 const session = require('express-session'); // Import Express Session Package
 const User = require('../models/user');
-const {SECRET, FB_APP_ID, FB_APP_SECRET, callback_url, profileFields} = require('./config');
+const {SECRET, FB_APP_ID, FB_APP_SECRET, CALLBACK_URL, PROFILE_FIELDS} = require('./config');
 
 
 module.exports = function(app, passport){
@@ -64,8 +64,8 @@ passport.use(new FacebookStrategy({
     clientID: FB_APP_ID,
     clientSecret: FB_APP_SECRET,
     //callbackURL: config.callback_url,
-    callbackURL: callback_url,
-    profileFields: profileFields
+    callbackURL: CALLBACK_URL,
+    profileFields: PROFILE_FIELDS
   },
   function(accessToken, refreshToken, profile, done) {
     console.log("in passport fb...")

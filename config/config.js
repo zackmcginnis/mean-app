@@ -3,6 +3,7 @@ require('dotenv').config()
 //From .env file - see blankEnv for template
 const {
   ENV,
+  CALLBACK_URL,
   EMAIL_ZACK,
   FB_APP_ID,
   FB_APP_SECRET,
@@ -18,8 +19,7 @@ const {
   SECRET
 } = process.env
 
-const profileFields =  ['id', 'name', 'displayName', 'email'];
-const callback_url =   "http://localhost:3000/auth/facebook/callback";
+const PROFILE_FIELDS =  ['id', 'name', 'displayName', 'email'];
 //const callback_url = "/auth/facebook/callback";
 const PROCESS_TITLE = 'Vacation Calculator';
 //const callback_url =  "http://vacation-calc.herokuapp.com/auth/facebook/callback"; //for heroku deploy
@@ -39,7 +39,7 @@ module.exports = {
   PORT_DEPLOY,
   PUBLIC_DIR,
   SECRET,
-  callback_url,
-  profileFields,
+  CALLBACK_URL,
+  PROFILE_FIELDS,
   PROCESS_TITLE
 }
