@@ -18,12 +18,17 @@ import {ValidateService} from './services/validate.service';
 import {AuthService} from './services/auth.service';
 import {FlashMessagesModule} from 'angular2-flash-messages';
 import {AuthGuard} from './guards/auth.guard';
+import {WindowRef } from './helpers/WindowRef';
+
 import { ResultComponent } from './components/result/result.component';
+import { FacebookloginComponent } from './components/facebooklogin/facebooklogin.component';
 
 const appRoutes: Routes =  [
   {path:'', component: HomeComponent},
   {path:'register', component: RegisterComponent},
   {path:'login', component: LoginComponent},
+  {path:'facebook/:token', component: FacebookloginComponent},
+  {path:'facebook/facebookerror', component: FacebookloginComponent},
   {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
   {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
   {path:'vacations', component: VacationListComponent, canActivate:[AuthGuard]}
@@ -41,7 +46,8 @@ const appRoutes: Routes =  [
     VacationListComponent,
     VacationComponent,
     VacationComponent,
-    ResultComponent
+    ResultComponent,
+    FacebookloginComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +57,7 @@ const appRoutes: Routes =  [
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule
   ],
-  providers: [ValidateService, AuthService, AuthGuard],
+  providers: [ValidateService, AuthService, AuthGuard, WindowRef],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

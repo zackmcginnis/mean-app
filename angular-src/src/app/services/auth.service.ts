@@ -6,25 +6,38 @@ import 'rxjs/add/operator/map';
 import {tokenNotExpired} from 'angular2-jwt';
 import {Guest, Vacation} from '../helpers/classes';
 
+declare const FB: any;
 
 @Injectable()
 export class AuthService {
   authToken: any;
+  fbBool: any;
   user: any;
   vacations: any;
   guest: any;
   isDep: boolean;
+  logged: boolean = false; //fb
 
   constructor(private http:Http) { 
+
     this.isDep = true;  //change to false if developing locally
+
+
+    FB.init({
+        appId      : '1269113989876166',
+        cookie     : true,  // enable cookies to allow the server to access
+                            // the session
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.8' // use graph api version 2.5
+    });
   }
 
   registerUser(user){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
     console.log("browser...", user)
-    let ep = this.prepEndpoint('users/register');
-    //return this.http.post('http://localhost:3000/users/register', user,{headers: headers})
+    let ep = this.prepEndpoint('api/register');
+    //return this.http.post('http://localhost:3000/api/register', user,{headers: headers})
     return this.http.post(ep, user,{headers: headers})
       .map(res => res.json());
   }
@@ -32,7 +45,7 @@ export class AuthService {
   authenticateUser(user){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
-    let ep = this.prepEndpoint('users/authenticate');
+    let ep = this.prepEndpoint('api/authenticate');
     return this.http.post(ep, user,{headers: headers})
       .map(res => res.json());
   }
@@ -42,7 +55,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
-    let ep = this.prepEndpoint('users/profile');
+    let ep = this.prepEndpoint('api/profile');
     return this.http.get(ep,{headers: headers})
       .map(res => res.json());
   }
@@ -63,6 +76,14 @@ export class AuthService {
     return tokenNotExpired();
   }
 
+  loggedInFB(){
+    if (this.fbBool){
+      return true;
+    }else {
+      return false;
+    }
+  }
+
   hasData(guests){
     if (guests == undefined){
     return false;
@@ -73,6 +94,7 @@ export class AuthService {
 
   logout(){
     this.authToken = null;
+    this.fbBool = false;
     this.user = null;
     localStorage.clear();
   }
@@ -83,7 +105,7 @@ export class AuthService {
     this.loadToken();
     vacation.newFlag = false;
     console.log(vacation)
-    let ep = this.prepEndpoint('users/vacations');
+    let ep = this.prepEndpoint('api/vacations');
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.post(ep, vacation, {headers: headers})
@@ -98,7 +120,7 @@ export class AuthService {
   getVacations(): Observable<any> {
     let headers = new Headers();
     this.loadToken();
-    let ep = this.prepEndpoint('users/vacations');
+    let ep = this.prepEndpoint('api/vacations');
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.get(ep,{headers: headers})
@@ -108,7 +130,7 @@ export class AuthService {
   updateVacation(vacation){
     let headers = new Headers();
     this.loadToken();
-    let ep = this.prepEndpoint('users/vacations/edit');
+    let ep = this.prepEndpoint('api/vacations/edit');
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.put(ep, vacation, {headers: headers})
@@ -123,7 +145,7 @@ export class AuthService {
   deleteVacation(vacation){
     let headers = new Headers();
     this.loadToken();
-    let ep = this.prepEndpoint('users/vacations/delete');
+    let ep = this.prepEndpoint('api/vacations/delete');
     headers.append('Authorization', this.authToken);
     console.log("deleting this vacation", vacation)
     headers.append('Content-Type','application/json');
@@ -140,7 +162,7 @@ export class AuthService {
   addGuest(guest){
     let headers = new Headers();
     this.loadToken();
-    let ep = this.prepEndpoint('users/vacations/guests');
+    let ep = this.prepEndpoint('api/vacations/guests');
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.post(ep, guest,{headers: headers})
@@ -150,7 +172,7 @@ export class AuthService {
   getGuests(): Observable<any>{
     let headers = new Headers();
     this.loadToken();
-    let ep = this.prepEndpoint('users/vacations/guests');
+    let ep = this.prepEndpoint('api/vacations/guests');
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.get(ep,{headers: headers})
@@ -160,7 +182,7 @@ export class AuthService {
   updateGuests(guest){
     let headers = new Headers();
     this.loadToken();
-    let ep = this.prepEndpoint('users/vacations');
+    let ep = this.prepEndpoint('api/vacations');
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.get(ep,{headers: headers})
@@ -170,7 +192,7 @@ export class AuthService {
   deleteGuest(guest){
     let headers = new Headers();
     this.loadToken();
-    let ep = this.prepEndpoint('users/vacations');
+    let ep = this.prepEndpoint('api/vacations');
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.get(ep,{headers: headers})
@@ -180,7 +202,7 @@ export class AuthService {
   sendPdf(file){
     let headers = new Headers();
     this.loadToken();
-    let ep = this.prepEndpoint('users/email');
+    let ep = this.prepEndpoint('api/email');
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type','application/json');
     return this.http.post(ep, file, {headers: headers})
@@ -192,6 +214,46 @@ export class AuthService {
       );
       ;
   }
+
+//facebook login (front end handling fb user data/token (sub-optimal))
+  // findFB(fbData){
+  //   let headers = new Headers();
+  //   headers.append('Content-Type','application/json');
+  //   let ep = this.prepEndpoint('api/facebook');
+  //   return this.http.post(ep, fbData,{headers: headers})
+  //     .map(res => res.json());
+  // }
+
+  // loggedInFB(){
+  //   FB.getLoginStatus(response => {
+  //     this.statusChangeCallback(response);
+  //   });
+  // }
+
+  // statusChangeCallback(response: any) {
+  //     if (response.status === 'connected') {
+  //       this.logged = true;
+  //       return true;
+  //     } else {
+  //       this.logged = false;
+  //       return false;
+  //     }
+  // }
+
+  //facebook (backend implementation)
+  // loginFlowFB(){
+  //   let headers = new Headers();
+  //   headers.append('Content-Type','application/json');
+  //   let ep = this.prepEndpoint('api/auth/facebook');
+  //   return this.http.get(ep,{headers: headers})
+  //     .map(res => res.json());
+  // };
+
+  facebook(token){
+    localStorage.setItem('id_token', token);
+    this.authToken = token;
+    this.fbBool = true;
+  };
 
   prepEndpoint(ep){
     if(this.isDep){

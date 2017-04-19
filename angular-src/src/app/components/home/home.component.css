@@ -8,7 +8,13 @@
 
 #cols {
 	text-align: center;
+	width: 100%;
+	height: 100%;
 }
+
+.col {
+		height: 125px;
+	}
 
 .row #left{
 	color: white;
@@ -22,4 +28,36 @@
 .row #right{
 	color: white;
 	background-color: #337ab7;
+}
+
+#fb{
+	padding-top: 4px;
+}
+
+@media screen and (max-width: 1199px) {
+	
+.col {
+		height: 175px;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	
+.col {
+		height: 100px;
+	}
+}
+
+@media screen and (max-width: 417px) {
+	
+.col {
+		height: 140px;
+	}
+}
+
+@media screen and (max-width: 320px) {
+	
+.col {
+		height: 175px;
+	}
 }
