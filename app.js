@@ -1,8 +1,7 @@
 'use strict'
 
 require('dotenv').config();
-const {PORT, MONGO_DB_HOST, PROCESS_TITLE} = require('./config/config');
-//const ENV = config.ENV || 'prod';
+const {ENV, PORT, MONGO_DB_HOST, PROCESS_TITLE} = require('./config/config');
 process.title = PROCESS_TITLE;
 // //require('./helpers/unhandled-exceptions.logger')
 // require('./helpers/prototype-extensions')
