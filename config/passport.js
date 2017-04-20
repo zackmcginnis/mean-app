@@ -69,11 +69,10 @@ passport.use(new FacebookStrategy({
     profileFields: PROFILE_FIELDS
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log("logging profile...", profile)
-    console.log("logging profile._json...", profile._json)
+
     User.findOne({email: profile._json.email}).select('username password email name vacations').exec(function(err, user){
       if (err) {
-        console.log(err)
+        console.log(err);
         done(err);
       }
 
@@ -97,9 +96,10 @@ passport.use(new FacebookStrategy({
                 //res.json({success: false, msg:'Failed to register user'});
               } else {
                 console.log("added user from fb ", user);
-                //res.json({success: true, msg:'User registered'});
+                //res.json({success: true, msg:'User registered'});                
               }
             });
+        done(null, newUser);
       }
     })
   }));
