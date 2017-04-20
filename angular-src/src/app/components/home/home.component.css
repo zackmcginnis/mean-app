@@ -3,8 +3,20 @@
 }
 
 #lead {
-	background-color: #e7e7e7;	
+	background-color: transparent;	
 }
+
+.copyright {
+    background: transparent;
+    color: black;
+    font-size: 10px;
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:30px;
+   width:100%;
+}	
+
 
 #cols {
 	text-align: center;
@@ -49,6 +61,12 @@
 .col {
 		height: 100px;
 	}
+
+.copyright {
+	position: relative;
+	padding-top: 10px;
+}	
+
 }
 
 @media screen and (max-width: 417px) {

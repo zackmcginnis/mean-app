@@ -4,7 +4,8 @@ const FacebookStrategy  = require('passport-facebook').Strategy
 const jwt = require('jsonwebtoken');
 const session = require('express-session'); // Import Express Session Package
 const User = require('../models/user');
-const {SECRET, FB_APP_ID, FB_APP_SECRET, CALLBACK_URL, PROFILE_FIELDS} = require('./config');
+const Vacation = require('../models/vacation');
+const {SECRET, FB_APP_ID, FB_APP_SECRET, CALLBACK_URL, PROFILE_FIELDS, CLIENT_HOST, GENERATED_PASSWORD} = require('./config');
 
 
 module.exports = function(app, passport){
@@ -68,26 +69,49 @@ passport.use(new FacebookStrategy({
     profileFields: PROFILE_FIELDS
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log("in passport fb...")
+    console.log("logging profile...", profile)
+    console.log("logging profile._json...", profile._json)
     User.findOne({email: profile._json.email}).select('username password email name vacations').exec(function(err, user){
-      if (err) done(err);
-
-      if (user && user != null){
-        done(null, user);
-      } else {
+      if (err) {
+        console.log(err)
         done(err);
+      }
+
+      if (user && user != null){ //found user
+        done(null, user);
+
+      } else { //no user, create one
+            let newUser = new User({
+              name: profile._json.name,
+              email: profile._json.email,
+              username: profile._json.email,
+              password: GENERATED_PASSWORD
+              //temporarytoken: regToken
+            });
+            //perform validation here as well
+
+            User.addUser(newUser, (err, user) => {
+
+              if(err){
+                console.log(err);
+                //res.json({success: false, msg:'Failed to register user'});
+              } else {
+                console.log("added user from fb ", user);
+                //res.json({success: true, msg:'User registered'});
+              }
+            });
       }
     })
   }));
 
 //FACEBOOK ROUTES
 
-app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email, public_profile'}));
  
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/facebookerror' }), function(req, res){
 
   //res.redirect('http://localhost:4200/facebook/'+token); //change for production
-  res.redirect('/facebook/'+token); //change for production
+  res.redirect(CLIENT_HOST+'/facebook/'+token); //change for production
 
 });
 

@@ -4,9 +4,11 @@ require('dotenv').config()
 const {
   ENV,
   CALLBACK_URL,
+  CLIENT_HOST,
   EMAIL_ZACK,
   FB_APP_ID,
   FB_APP_SECRET,
+  GENERATED_PASSWORD,
   GMAILUSER,
   GMAILPASS,
   MONGO_DB_NAME,
@@ -26,9 +28,11 @@ const PROCESS_TITLE = 'Vacation Calculator';
 
 module.exports = {
   ENV,
+  CLIENT_HOST,
   EMAIL_ZACK,
   FB_APP_ID,
   FB_APP_SECRET,
+  GENERATED_PASSWORD,
   GMAILUSER,
   GMAILPASS,
   MONGO_DB_NAME,
