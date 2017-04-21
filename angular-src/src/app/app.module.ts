@@ -22,6 +22,8 @@ import {WindowRef } from './helpers/WindowRef';
 
 import { ResultComponent } from './components/result/result.component';
 import { FacebookloginComponent } from './components/facebooklogin/facebooklogin.component';
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 const appRoutes: Routes =  [
   {path:'', component: HomeComponent},
@@ -55,7 +57,9 @@ const appRoutes: Routes =  [
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    FlashMessagesModule
+    FlashMessagesModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule
   ],
   providers: [ValidateService, AuthService, AuthGuard, WindowRef],
   bootstrap: [AppComponent]

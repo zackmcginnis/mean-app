@@ -187,24 +187,6 @@ router.put('/vacations/delete', (req, res, next) => {
   });
 });
 
-/////////////Guest routes
-
-//add Guest
-
-// get Guest
-router.get('/guests', (req, res, next) => {
-  res.json({vacations: req.decoded._doc.vacations});
-});
-
-//Update Guest
-
-
-// Delete Guest
-router.delete('/vacations/:name/guests', (req, res, next) => {
-
-});
-
-
 //email
 router.post('/email', (req, res, next) => {
   let list = req.body.emailList;
@@ -238,7 +220,7 @@ router.post('/email', (req, res, next) => {
   // send mail with defined transport object
   list.forEach(function (to, i) {
     message.to = to;
-    message.transport.sendMail(message, function(error, info){
+    message.transport.sendMail(message, (error, info) => {
         if(error){
             console.log(error);
         }else{

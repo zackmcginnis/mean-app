@@ -18,7 +18,10 @@ const {
   PORT,
   PORT_DEPLOY,
   PUBLIC_DIR,
-  SECRET
+  SECRET,
+  SUPPRESS_ERROR_EMAILS,
+  WEB_ADDRESS
+
 } = process.env
 
 const PROFILE_FIELDS =  ['id', 'name', 'displayName', 'email'];
@@ -45,5 +48,7 @@ module.exports = {
   SECRET,
   CALLBACK_URL,
   PROFILE_FIELDS,
-  PROCESS_TITLE
+  PROCESS_TITLE,
+  SUPPRESS_ERROR_EMAILS,
+  WEB_ADDRESS
 }

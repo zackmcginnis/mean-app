@@ -11,12 +11,12 @@ declare const FB: any;
 @Injectable()
 export class AuthService {
   authToken: any;
-  fbBool: any;
   user: any;
   vacations: any;
   guest: any;
   isDep: boolean;
-  logged: boolean = false; //fb
+  //loggedIntoFB: boolean = false; //fb
+  //loggedIntoAppWithFB: boolean = false;
 
   constructor(private http:Http) { 
 
@@ -77,7 +77,8 @@ export class AuthService {
   }
 
   loggedInFB(){
-    if (this.fbBool){
+  const fbtoken = localStorage.getItem('fb_token');    
+    if (fbtoken){
       return true;
     }else {
       return false;
@@ -94,9 +95,15 @@ export class AuthService {
 
   logout(){
     this.authToken = null;
-    this.fbBool = false;
+    //this.loggedIntoAppWithFB = false;
     this.user = null;
     localStorage.clear();
+  }
+
+  fbLogout(){
+    FB.logout(function(response) {
+      console.log("user is now logged out");
+    });
   }
 
 ///////////////vacation service functions 
@@ -158,46 +165,46 @@ export class AuthService {
       );
   }
 
-///////////////guest service functions
-  addGuest(guest){
-    let headers = new Headers();
-    this.loadToken();
-    let ep = this.prepEndpoint('api/vacations/guests');
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type','application/json');
-    return this.http.post(ep, guest,{headers: headers})
-      .map(res => res.json());
-  }
+// ///////////////guest service functions
+//   addGuest(guest){
+//     let headers = new Headers();
+//     this.loadToken();
+//     let ep = this.prepEndpoint('api/vacations/guests');
+//     headers.append('Authorization', this.authToken);
+//     headers.append('Content-Type','application/json');
+//     return this.http.post(ep, guest,{headers: headers})
+//       .map(res => res.json());
+//   }
 
-  getGuests(): Observable<any>{
-    let headers = new Headers();
-    this.loadToken();
-    let ep = this.prepEndpoint('api/vacations/guests');
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type','application/json');
-    return this.http.get(ep,{headers: headers})
-      .map(res => res.json());
-  }
+//   getGuests(): Observable<any>{
+//     let headers = new Headers();
+//     this.loadToken();
+//     let ep = this.prepEndpoint('api/vacations/guests');
+//     headers.append('Authorization', this.authToken);
+//     headers.append('Content-Type','application/json');
+//     return this.http.get(ep,{headers: headers})
+//       .map(res => res.json());
+//   }
 
-  updateGuests(guest){
-    let headers = new Headers();
-    this.loadToken();
-    let ep = this.prepEndpoint('api/vacations');
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type','application/json');
-    return this.http.get(ep,{headers: headers})
-      .map(res => res.json());
-  }
+//   updateGuests(guest){
+//     let headers = new Headers();
+//     this.loadToken();
+//     let ep = this.prepEndpoint('api/vacations');
+//     headers.append('Authorization', this.authToken);
+//     headers.append('Content-Type','application/json');
+//     return this.http.get(ep,{headers: headers})
+//       .map(res => res.json());
+//   }
 
-  deleteGuest(guest){
-    let headers = new Headers();
-    this.loadToken();
-    let ep = this.prepEndpoint('api/vacations');
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type','application/json');
-    return this.http.get(ep,{headers: headers})
-      .map(res => res.json());
-  }
+//   deleteGuest(guest){
+//     let headers = new Headers();
+//     this.loadToken();
+//     let ep = this.prepEndpoint('api/vacations');
+//     headers.append('Authorization', this.authToken);
+//     headers.append('Content-Type','application/json');
+//     return this.http.get(ep,{headers: headers})
+//       .map(res => res.json());
+//   }
 
   sendPdf(file){
     let headers = new Headers();
@@ -251,8 +258,9 @@ export class AuthService {
 
   facebook(token){
     localStorage.setItem('id_token', token);
+    localStorage.setItem('fb_token', token);
     this.authToken = token;
-    this.fbBool = true;
+    //this.loggedIntoAppWithFB = true;
   };
 
   prepEndpoint(ep){

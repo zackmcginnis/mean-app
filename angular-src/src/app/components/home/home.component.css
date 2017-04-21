@@ -49,6 +49,25 @@
 	text-align: center;
 }
 
+.fblogged{
+	padding-top: 4px;
+	max-width: 450px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.fbnot{
+	padding-top: 4px;
+	max-width: 450px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#fbpic{
+	height: 40px;
+	width: 40px;
+}
+
 @media screen and (max-width: 1199px) {
 	
 .col {
@@ -75,6 +94,37 @@
 		height: 140px;
 	}
 }
+
+@media screen and (max-width: 365px) {
+.fb{
+	padding-top: 4px;
+	max-width: 450px;
+	margin: 0 auto;
+	text-align: right;
+}
+
+.fblogged{
+	padding-top: 4px;	
+	max-width: 450px;
+	margin: 0 auto;
+	text-align: right;
+}
+
+.fbnot{
+	padding-top: 4px;
+	max-width: 450px;
+	margin: 0 auto;
+	text-align: right;
+}
+
+
+#fbpic{
+	height: 30px;
+	width: 30px;
+	margin-left: 20px;
+}
+}
+
 
 @media screen and (max-width: 320px) {
 	

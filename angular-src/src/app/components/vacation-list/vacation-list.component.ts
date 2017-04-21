@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewContainerRef, ViewEncapsulation, OnInit } from '@angular/core';
 import { Observable }        from 'rxjs/Observable';
 import {Router} from '@angular/router';
 import 'rxjs/add/operator/finally';
@@ -6,6 +6,8 @@ import {AuthService} from '../../services/auth.service';
 import {VacationUpdateService} from '../../services/vacation-update.service';
 import {Guest, Vacation} from '../../helpers/classes';
 import {VacationPipe} from '../../helpers/pipes';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
+import { Overlay } from 'angular2-modal';
 
 @Component({
   selector: 'app-vacation-list',
@@ -20,7 +22,9 @@ export class VacationListComponent implements OnInit {
   selectedVacation: Vacation;
   newvacation = new Vacation;
 
-  constructor(private authService:AuthService, private router:Router) { }
+  constructor(private authService:AuthService, private router:Router) {
+    //modal.overlay.defaultViewContainer = vcRef; 
+  }
 
   ngOnInit() {
     /*

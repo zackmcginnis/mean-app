@@ -20,11 +20,19 @@ const session = require('express-session');
 const social = require('./config/passport')(app, passport);
 const router = express.Router(); // Invoke the Express Router
 const routes = require('./routes/users')(router);
+const logger = require('./helpers/logger')('app')
 
-// const options = {
-//    key  : fs.readFileSync('server.key'),
-//    cert : fs.readFileSync('server.crt')
-// };
+logger.info(`*** Environment: ${ENV} ***`)
+if (ENV==='dev') {
+  logger.warn(`
+***http will NOT redirect to https
+***socket.io will listen on http as well as https
+`)
+} else {
+  logger.info(`
+    http is being redirected to https, set ENV=dev in .env to stop this
+  `)
+}
 
 app.use(cors());
 app.use(morgan('dev')); // Morgan Middleware
@@ -56,7 +64,6 @@ mongoose.connection.on('error', (err) => {
   console.log('Database error: '+err);
 });
 
-
 // Port Number
 
 //const port = 3000;
@@ -64,7 +71,6 @@ mongoose.connection.on('error', (err) => {
 
 const port = PORT;//3000;
 //const port = process.env.PORT || 8080; //for deploy
-
 
 const getIp = require('ipware')().get_ip;
 app.use(function(req, res, next) {

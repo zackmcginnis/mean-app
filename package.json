@@ -8,6 +8,7 @@
     "start": "node app"
   },
   "dependencies": {
+    "babel": "^6.23.0",
     "bcryptjs": "*",
     "body-parser": "*",
     "cors": "*",
@@ -27,7 +28,9 @@
     "nodemailer": "^4.0.1",
     "passport": "*",
     "passport-facebook": "^2.1.1",
-    "passport-jwt": "*"
+    "passport-jwt": "*",
+    "socket.io": "^1.7.3",
+    "winston": "^2.3.1"
   },
   "author": "Zack McGinnis",
   "license": "ISC"

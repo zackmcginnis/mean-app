@@ -22,6 +22,8 @@
             <li *ngIf="(authService.loggedIn() || authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="profile" [routerLink]="['/profile']">Profile</a></li>
             <li *ngIf="(authService.loggedIn() || authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="vacations" [routerLink]="['/vacations']">Vacations</a></li>
 
+            <li id="fb" *ngIf="authService.loggedInFB()"><a id="fbloggedin" [routerLink]="['/profile']"><img id="fbpic" src="{{fbPic}}"/> {{fbName}}</a></li>
+
             <li *ngIf="(!authService.loggedIn() && !authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="login" [routerLink]="['/login']">Login</a></li>
             <li *ngIf="(!authService.loggedIn() && !authService.loggedInFB())" [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact:true}"><a id="register" [routerLink]="['/register']">Register</a></li>
             <li *ngIf="(authService.loggedIn() || authService.loggedInFB())"><a id="logout" (click)="onLogoutClick()" href="#">Logout</a></li>

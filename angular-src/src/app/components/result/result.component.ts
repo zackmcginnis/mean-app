@@ -1,15 +1,17 @@
-import { Component, OnInit, OnChanges, ChangeDetectorRef, Input, SimpleChange, NgZone } from '@angular/core';
+import { Component, OnInit, OnChanges, ChangeDetectorRef, ViewContainerRef, ViewEncapsulation, Input, SimpleChange, NgZone } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {PdfService} from '../../services/pdf.service';
 import {VacationUpdateService} from '../../services/vacation-update.service';
 import {Guest, Vacation, EmailObject} from '../../helpers/classes';
 import { Subscription }   from 'rxjs/Subscription';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import * as jspdf from 'jspdf';
 
 @Component({
   selector: 'app-result',
-  providers: [AuthService, VacationUpdateService, PdfService,],
+  providers: [AuthService, VacationUpdateService, PdfService],
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.css']
 })
@@ -21,10 +23,58 @@ export class ResultComponent implements OnChanges, OnInit {
   	subscription: Subscription;
   	send: boolean = false;
   	user: Object;
+    result: any;
 
-  	constructor(private pdfService: PdfService, private authService: AuthService, private updateService: VacationUpdateService) 
-  	{}
+  	constructor(vcRef: ViewContainerRef, public modal: Modal, private pdfService: PdfService, private authService: AuthService, private updateService: VacationUpdateService) 
+  	{
+        modal.overlay.defaultViewContainer = vcRef;
+    }
   
+    modalConfirm() {
+        this.modal.confirm()
+                .isBlocking(true)
+                //.okBtnClass("hidden")
+                .showClose(true)      
+                //.addButton('btn btn-default', 'Discard')
+                //.addButton('btn btn-primary', 'Accept')               
+                .size('sm')
+                .title('Confirm send email with PDF attachment to guests')
+                .body(`
+                    <h4>Are you sure you want to send the pricing breakdown for this vacation to all of your guests?</h4>`)
+                .open()
+                .then((resultPromise) => {
+                    resultPromise.result.then((result) => {
+                    this.result = result;
+                    if(this.result == true){
+                        this.sendAll();
+                    }
+                }, () => this.result = 'Rejected!');
+                });             
+    };
+
+
+
+    // this.modal.alert()
+    //     .size('lg')
+    //     .title('Confirm send email with PDF attachment to guests')
+    //     .body(`
+    //         <h4>Are you sure you want to send the pricing breakdown for this vacation to all of your guests?</h4>
+    //         <b>Deliver to:</b>
+    //         <ul>
+    //             <div *ngFor="let guest of guests"> 
+    //                 <div>              
+    //                 <li>{{guest.guestEmail}}</li>
+    //                 </div>             
+    //             </div>
+    //         </ul>`)
+    //     .okBtnClass("hidden")
+    //     .showClose(false)
+    //     .addButton('btn btn-default', 'Cancel', this.closeModalCancel)
+    //     .addButton('btn btn-primary', 'Ok', this.closeModalOk)
+    //     .open();
+    // }
+
+
   	ngOnInit(){
     this.authService.getProfile().subscribe(profile => {
       this.user = profile.user;

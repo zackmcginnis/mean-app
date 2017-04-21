@@ -1,9 +1,12 @@
-import { Component, ChangeDetectorRef, OnInit, Input, OnChanges, ApplicationRef } from '@angular/core';
+import { Component, ViewContainerRef, ViewEncapsulation, ChangeDetectorRef, OnInit, Input, OnChanges, ApplicationRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {VacationUpdateService} from '../../services/vacation-update.service';
 import {ResultComponent} from '../result/result.component';
 import {VacationListComponent} from '../vacation-list/vacation-list.component';
+import {Router} from '@angular/router';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import {Guest, Vacation} from '../../helpers/classes';
 
@@ -18,6 +21,7 @@ export class VacationComponent implements OnChanges {
   @Input() vacation: Vacation;
   vacationForm: FormGroup;
   savedGuests: Array<Guest> = [];
+  result: any;
 
   constructor(
     private fb: FormBuilder,
@@ -25,9 +29,59 @@ export class VacationComponent implements OnChanges {
     private updateService: VacationUpdateService,
     private cdr:ChangeDetectorRef,
     public ApplicationRef: ApplicationRef,
-    public vlist: VacationListComponent) {
+    public vlist: VacationListComponent,
+    vcRef: ViewContainerRef, 
+    public modal: Modal,
+    private router: Router) {
     this.createForm();
+    modal.overlay.defaultViewContainer = vcRef;
+
   }
+
+  modalConfirmDeleteGuest(index) {
+    this.modal.confirm()
+            .isBlocking(true)
+            //.okBtnClass("hidden")
+            .showClose(true)      
+            //.addButton('btn btn-default', 'Discard')
+            //.addButton('btn btn-primary', 'Accept')               
+            .size('sm')
+            .title('Confirm deletion of guest')
+            .body(`
+                <h4>Are you sure you want to delete this guest?</h4>`)
+            .open()
+            .then((resultPromise) => {
+                resultPromise.result.then((result) => {
+                this.result = result;
+                if(this.result == true){
+                    this.deleteGuest(index);
+                    this.onSubmit();
+                }
+            }, () => this.result = 'Rejected!');
+            });             
+  };
+
+  modalConfirmDeleteVacation() {
+    this.modal.confirm()
+            .isBlocking(true)
+            //.okBtnClass("hidden")
+            .showClose(true)      
+            //.addButton('btn btn-default', 'Discard')
+            //.addButton('btn btn-primary', 'Accept')               
+            .size('sm')
+            .title('Confirm deletion of vacation')
+            .body(`
+                <h4>Are you sure you want to delete this vacation?</h4>`)
+            .open()
+            .then((resultPromise) => {
+                resultPromise.result.then((result) => {
+                this.result = result;
+                if(this.result == true){
+                  this.delete();
+                }
+            }, () => this.result = 'Rejected!');
+            });             
+  };  
 
   createForm() {
     this.vacationForm = this.fb.group({
@@ -45,16 +99,10 @@ export class VacationComponent implements OnChanges {
     });
    //this.cdr.detectChanges();
     this.setGuests(this.vacation.guests);
-  }
 
-  // getGuestsFromServer() {
-  //   this.authService.getGuests()
-  //     .subscribe(
-  //       savedGuests => {
-  //         this.savedGuests = savedGuests
-  //         console.log(this.savedGuests)
-  //     }) 
-  // }
+   // this.vacation = changes.vacation.currentValue;
+
+  }
 
   get guests(): FormArray {
     return this.vacationForm.get('guests') as FormArray;
@@ -62,9 +110,10 @@ export class VacationComponent implements OnChanges {
 
   setGuests(guests: Guest[]) {
     if (guests == undefined){
-      const guestFGs = null;
-      const guestFormArray = null;
-      //this.vacationForm.setControl('guests', guestFormArray);
+      console.log("guests undefined...");
+      const guestFGs = [];
+      const guestFormArray = this.fb.array(guestFGs);;
+      this.vacationForm.setControl('guests', guestFormArray);
     } else {
       const guestFGs = guests.map(guest => this.fb.group(guest));
       const guestFormArray = this.fb.array(guestFGs);
@@ -149,14 +198,4 @@ export class VacationComponent implements OnChanges {
     }
     return guests;
   }
-
-  // refreshVacation(oldVac){
-  //   this.authService.getVacations()
-  //     .subscribe(
-  //       vacations => {
-  //         this.vacations = vacations;
-  //     })
-  // }
-
-
 }
