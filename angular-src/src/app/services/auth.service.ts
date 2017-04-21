@@ -20,7 +20,7 @@ export class AuthService {
 
   constructor(private http:Http) { 
 
-    this.isDep = false;  //change to false if developing locally
+    this.isDep = true;  //change to false if developing locally
 
 
     FB.init({

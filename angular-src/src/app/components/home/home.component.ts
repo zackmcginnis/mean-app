@@ -39,8 +39,8 @@ ngOnInit() {
 	facebook(){
 		//console.log(this.window.nativeWindow.location.host);
 		//console.log(this.window.nativeWindow.location.protocol);
-		this.window.nativeWindow.location = this.window.nativeWindow.location.protocol + '//' + 'localhost:3000' + '/auth/facebook';
-		//this.window.nativeWindow.location = '/auth/facebook'; //for deploy
+		//this.window.nativeWindow.location = this.window.nativeWindow.location.protocol + '//' + 'localhost:3000' + '/auth/facebook';
+		this.window.nativeWindow.location = '/auth/facebook'; //for deploy
 	};
 
 	loggedInFB(){
